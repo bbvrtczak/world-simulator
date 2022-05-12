@@ -207,4 +207,8 @@ public class Swiat {
         }
         return org;
     }
+
+    public int czyCzlowiekSieRusza() {
+        return kierunekCzlowieka;
+    }
 }

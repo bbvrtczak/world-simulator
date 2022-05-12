@@ -76,6 +76,7 @@ public abstract class Organizm {
 
     public void rozmnozylSie(){
         ileDoRozmnozenia = 10;
+        czySieRozmnozyl = true;
     }
 
     public int getIleDoRozmnozenia(){
@@ -129,4 +130,8 @@ public abstract class Organizm {
 
     public abstract String organizmToString();
 
+    public void zmniejszNiesmiertelnosc() {
+        if (niesmiertelnosc > 0)
+            niesmiertelnosc--;
+    }
 }
