@@ -4,6 +4,10 @@ import java.util.Vector;
 public class Swiat {
 
     private static final int NIE_PORUSZA_SIE = 0;
+    private static final int GORA = 1;
+    private static final int DOL = 2;
+    private static final int LEWO = 3;
+    private static final int PRAWO = 4;
 
     protected int wysokosc;
     protected int szerokosc;
@@ -18,16 +22,57 @@ public class Swiat {
         dodaneOrganizmy.clear();
         komentarze.clear();
 
+        if (czyCzlowiekZyje){
+            //Czlowiek org = new Czlowiek(); TODO: zrobic czlowieka
+            Organizm orgg = getOrganizmNaPozycji(getPozycjaCzlowieka());  //getter czlowieka
+            //TODO: dynamic cast na czlowieka (?) / zamienic ^ na czlowieka
+            if(true){ //TODO: org.czyUzywaUmiejetnosci()
+                dodajKomentarz("czlowiek uzywa umiejetnosci - pozostalo " ); //TODO: + int to string org.getIloscTur() + " tur"
+                //TODO: zmniejszyc cooldown specjalnej umiejetnosci
+            }
+            else if(true){ //TODO: sprawdzenie czy cooldown umiejetnosci > 0
+                //TODO: zmniejszenie cooldownu
+            }
 
+            if (!czyCzlowiekZyje){
+                dodajKomentarz("czlowiek nie zyje - nie mozna sie ruszyc");
+            }
+            sortujOrganizmy();
 
+            for (Organizm org : organizmy){
+                if (org.czyZyje()) {
+                    org.akcja();
+                }
+            }
+
+            usunMartweOrganizmy();
+        }
 
         for(Organizm org : organizmy){
             org.dodajWiek();
+            if (org.getIleDoRozmnozenia() > 0){
+                org.zmniejszCooldownRozmnozenia();
+            }
+            org.zmniejszNiesmiertelnosc();
         }
+
+        uaktualnijOrganizmy();
+        numerTury++;
+    }
+
+    public void uaktualnijOrganizmy(){
+        for(Organizm org : dodaneOrganizmy){
+            organizmy.addElement(org);
+        }
+    }
+
+    public void sortujOrganizmy(){ //TODO: sortowanie organizmow
+
     }
 
     public void przygotujSwiat(Swiat swiat){
         //dodawanie organizmow
+        organizmy.addElement(stworzOrganizm("trawa", losujWolnePole(), swiat));
     }
 
     public Swiat getSwiat(){
@@ -200,15 +245,45 @@ public class Swiat {
     }
 
     public Organizm stworzOrganizm(String orgString, Punkt p, Swiat swiat){
-        Organizm org = null;
+        Vector<Organizm> v = new Vector<Organizm>();
         if(orgString == "trawa"){
             Trawa trawa = new Trawa(swiat, p);
-            org = trawa;
+            v.addElement(trawa);
         }
-        return org;
+        return v.get(0);
     }
 
     public int czyCzlowiekSieRusza() {
         return kierunekCzlowieka;
+    }
+
+    public Punkt getNowePoleCzlowieka() {
+        Punkt obecnaPozycja = getPozycjaCzlowieka();
+        Punkt nowePole = new Punkt();
+        nowePole = obecnaPozycja;
+        switch (kierunekCzlowieka){ //TODO: zagmatwane kierunki
+            case GORA:
+                if (obecnaPozycja.getX() > 0){
+                    nowePole.setX(obecnaPozycja.getX() - 1);
+                }
+                break;
+            case DOL:
+                if (obecnaPozycja.getX() < getWysokosc() - 1){
+                    nowePole.setX(obecnaPozycja.getX() + 1);
+                }
+                break;
+            case LEWO:
+                if (obecnaPozycja.getY() > 0){
+                    nowePole.setY(obecnaPozycja.getY() + 1);
+                }
+                break;
+            case PRAWO:
+                if (obecnaPozycja.getY() < getSzerokosc() - 1){
+                    nowePole.setY(obecnaPozycja.getY() + 1);
+                }
+                break;
+        }
+        kierunekCzlowieka = NIE_PORUSZA_SIE;
+        return nowePole;
     }
 }

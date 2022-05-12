@@ -19,6 +19,11 @@ public class WirtualnySwiat {
         swiat.przygotujSwiat(swiat);
 
 
+        for(int i=0; i < 500; i++){
+           swiat.wykonajTure();
+        }
+
+
 
 
         //Swiat swiat = new Swiat(y,x);
