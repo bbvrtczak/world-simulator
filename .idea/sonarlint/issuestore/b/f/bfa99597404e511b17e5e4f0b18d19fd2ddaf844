@@ -1,0 +1,45 @@
+
+€
+java:S1149"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(«‰©³üÿÿÿÿ
+€
+java:S1149"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(Ê»·‡úÿÿÿÿ
+€
+java:S1149"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(ü˜›æûÿÿÿÿ
+{
+java:S1149B"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(Š¿Ïÿ
+{
+java:S1149V"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(Š¿Ïÿ
+z
+java:S1149y"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(‘ÚÅ
+|
+java:S1149µ"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(Š¿Ïÿ
+9
+java:S21197"Save and re-use this "Random".(šŸ«íøÿÿÿÿ
+1
+java:S3626F"Remove this redundant jump.(¸ÀÆ
+9
+java:S2119N"Save and re-use this "Random".(šŸ«íøÿÿÿÿ
+7
+java:S1116Z"Remove this empty statement.(ÁÈİ„şÿÿÿÿ
+9
+java:S2119b"Save and re-use this "Random".(šŸ«íøÿÿÿÿ
+Q	java:S125}"<This block of commented-out lines of code should be removed.(‚Ïœ
+R	java:S125ˆ"<This block of commented-out lines of code should be removed.(–Â†ã
+N
+java:S1135¢"2Complete the task associated to this TODO comment.(ê¢çøøÿÿÿÿ
+8
+java:S1116¹"Remove this empty statement.(Åñ­õşÿÿÿÿ
+A
+java:S2119Æ"Save and re-use this "Random".(šŸ«íøÿÿÿÿ8Çê¦”‹0
+o
+java:S2293B"YReplace the type specification in this constructor call with the diamond operator ("<>").(Š¿Ïÿ
+o
+java:S2293V"YReplace the type specification in this constructor call with the diamond operator ("<>").(Š¿Ïÿ
+p
+java:S2293µ"YReplace the type specification in this constructor call with the diamond operator ("<>").(Š¿Ïÿ
+T
+java:S1155O">Use isEmpty() to check whether the collection is empty or not.(íä“­
+T
+java:S1155c">Use isEmpty() to check whether the collection is empty or not.(íä“­
+_
+java:S4973Ì"<Strings and Boxed types should be compared using "equals()".(±÷òÄøÿÿÿÿ8éÿ…•‹0

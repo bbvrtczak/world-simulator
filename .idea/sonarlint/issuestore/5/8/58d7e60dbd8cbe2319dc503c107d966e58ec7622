@@ -1,0 +1,9 @@
+
+:
+java:S1659"Declare "y" on a separate line.(¡Ê²‘þÿÿÿÿ
+V	java:S125"<This block of commented-out lines of code should be removed.(¾¹ÐÐûÿÿÿÿ
+Q	java:S125"<This block of commented-out lines of code should be removed.( ŸÄÐ
+A
+java:S14819"&Remove this unused "l" local variable.(¹ôþÊýÿÿÿÿ
+G
+java:S1874P",Remove this use of "show"; it is deprecated.(»Ã¦ùøÿÿÿÿ
