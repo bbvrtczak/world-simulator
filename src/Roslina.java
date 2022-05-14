@@ -26,24 +26,26 @@ public abstract class Roslina extends Organizm{
         jedzonaRoslina.zabij();
     }
 
-    public void rozsianie(){
-        Punkt p = new Punkt(-1,-1);
+    public void rozsianie() {
+        if (swiat.organizmy.size() < swiat.getSzerokosc() * swiat.getWysokosc()) {
+            Punkt p = new Punkt(-1, -1);
 
-        Organizm nowaRoslina;
+            Organizm nowaRoslina;
 
-        Punkt nowePole = new Punkt(-1,-1);
-        nowePole = this.getSwiat().losujWolneSasiedniePole(this.getPozycja());
+            Punkt nowePole = new Punkt(-1, -1);
+            nowePole = this.getSwiat().losujWolneSasiedniePole(this.getPozycja());
 
-        if (Objects.equals(nowePole, p))
-            return;
-
-        for(Organizm org : this.swiat.getDodaneOrganizmy()){
-            if (nowePole == org.getPozycja())
+            if (Objects.equals(nowePole, p))
                 return;
-        }
 
-        nowaRoslina = this.swiat.stworzOrganizm(this.organizmToString(), nowePole, swiat);
-        this.swiat.dodajOrganizmTymczasowy(nowaRoslina);
-        this.swiat.dodajKomentarz(this.organizmToString() + "rozrosl sie");
+            for (Organizm org : this.swiat.getDodaneOrganizmy()) {
+                if (nowePole == org.getPozycja())
+                    return;
+            }
+
+            nowaRoslina = this.swiat.stworzOrganizm(this.organizmToString(), nowePole, swiat);
+            this.swiat.dodajOrganizmTymczasowy(nowaRoslina);
+            this.swiat.dodajKomentarz(this.organizmToString() + "rozrosl sie");
+        }
     }
 }

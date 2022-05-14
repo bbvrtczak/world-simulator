@@ -29,7 +29,7 @@ public class WilczeJagody extends Roslina {
     }
 
     WilczeJagody(Swiat s, Punkt p){
-        sila = 0;
+        sila = 99;
         wiek = 0;
         swiat = s;
         pozycja = p;

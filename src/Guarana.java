@@ -28,7 +28,7 @@ public class Guarana extends Roslina{
     }
 
     Guarana(Swiat s, Punkt p){
-        sila = 99;
+        sila = 0;
         wiek = 0;
         swiat = s;
         pozycja = p;

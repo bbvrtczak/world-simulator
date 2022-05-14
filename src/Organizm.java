@@ -72,6 +72,7 @@ public abstract class Organizm {
 
     public void zabij(){
         zyje = false;
+        swiat.zabiteOrganizmy.addElement(this);
     }
 
     public void rozmnozylSie(){

@@ -15,38 +15,38 @@ public class Swiat {
     protected int kierunekCzlowieka;
     protected Vector<Organizm> organizmy;
     protected Vector<Organizm> dodaneOrganizmy;
+    protected Vector<Organizm> zabiteOrganizmy;
     protected Vector<String> komentarze;
 
     public void wykonajTure(){
         dodaneOrganizmy.clear();
         komentarze.clear();
 
-        if (czyCzlowiekZyje){
+        if (czyCzlowiekZyje) {
             Czlowiek czl;
             Organizm organizmCzlowieka = getOrganizmNaPozycji(getPozycjaCzlowieka());  //getter czlowieka
             czl = (Czlowiek) organizmCzlowieka;
-            if(czl.czyUzywaUmiejetnosci()){
+            if (czl.czyUzywaUmiejetnosci()) {
                 dodajKomentarz("czlowiek uzywa umiejetnosci - pozostalo " + czl.getIloscTur() + " tur");
                 czl.zmniejszCooldown();
-            }
-            else if(czl.getUmiejetnoscCooldown() > 0){
+            } else if (czl.getUmiejetnoscCooldown() > 0) {
                 czl.zmniejszCooldown();
             }
-
-            if (!czyCzlowiekZyje){
-                dodajKomentarz("czlowiek nie zyje - nie mozna sie ruszyc");
-            }
-
-            sortujOrganizmy();
-
-            for (Organizm org : organizmy){
-                if (org.czyZyje()) {
-                    org.akcja();
-                }
-            }
-
-            usunMartweOrganizmy();
         }
+        if (!czyCzlowiekZyje){
+            dodajKomentarz("czlowiek nie zyje - nie mozna sie ruszyc");
+        }
+
+        sortujOrganizmy();
+
+        for (Organizm org : organizmy){
+            if (org.czyZyje()) {
+                org.akcja();
+            }
+        }
+
+        usunMartweOrganizmy();
+        zabiteOrganizmy.clear();
 
         for(Organizm org : organizmy){
             org.dodajWiek();
@@ -70,13 +70,15 @@ public class Swiat {
         //dodawanie organizmow
         organizmy = new Vector<>();
         dodaneOrganizmy = new Vector<>();
+        zabiteOrganizmy = new Vector<>();
         komentarze = new Vector<>();
-        organizmy.addElement(stworzOrganizm("czlowiek", losujWolnePole(), swiat));
-        organizmy.addElement(stworzOrganizm("trawa", losujWolnePole(), swiat));
-        organizmy.addElement(stworzOrganizm("mlecz", losujWolnePole(), swiat));
+        //organizmy.addElement(stworzOrganizm("czlowiek", losujWolnePole(), swiat));
+        //organizmy.addElement(stworzOrganizm("trawa", losujWolnePole(), swiat));
+        //organizmy.addElement(stworzOrganizm("mlecz", losujWolnePole(), swiat));
         organizmy.addElement(stworzOrganizm("guarana", losujWolnePole(), swiat));
-        organizmy.addElement(stworzOrganizm("wilcze_jagody", losujWolnePole(), swiat));
-        organizmy.addElement(stworzOrganizm("barszcz_sosnowskiego", losujWolnePole(), swiat));
+        //organizmy.addElement(stworzOrganizm("wilcze_jagody", losujWolnePole(), swiat));
+        //organizmy.addElement(stworzOrganizm("barszcz_sosnowskiego", losujWolnePole(), swiat));
+        organizmy.addElement(stworzOrganizm("wilk", losujWolnePole(), swiat));
     }
 
     public Swiat getSwiat(){
@@ -87,7 +89,7 @@ public class Swiat {
         this.wysokosc = wysokosc;
         this.szerokosc = szerokosc;
         numerTury = 0;
-        czyCzlowiekZyje = true;
+        czyCzlowiekZyje = false;
         kierunekCzlowieka = NIE_PORUSZA_SIE;
     }
 
@@ -103,8 +105,8 @@ public class Swiat {
         Punkt pole = new Punkt(-1,-1);
         Random rand = new Random();
         do{
-            pole.setX(rand.nextInt(szerokosc));
-            pole.setY(rand.nextInt(wysokosc));
+            pole.setX(rand.nextInt(szerokosc - 1));
+            pole.setY(rand.nextInt(wysokosc - 1));
         }
         while(getOrganizmNaPozycji(pole) != null);
 
@@ -112,13 +114,12 @@ public class Swiat {
     }
 
     public Punkt losujSasiedniePole(Punkt p){
-        Vector<Punkt> sasiedniePola = new Vector<Punkt>();
-        Punkt pole = new Punkt(-1,-1);
+        Vector<Punkt> sasiedniePola = new Vector<>();
+        Punkt zajete = new Punkt(-1,-1);
         for(int y = p.getX() - 1; y < p.getY() + 2; y++){
             for (int x = p.getX() - 1; x < p.getX() + 2; x++){
-                if (!(y < 0 || y > wysokosc || x < 0 || x > szerokosc)){
-                    pole.setX(x);
-                    pole.setY(y);
+                if (!(y < 0 || y >= wysokosc || x < 0 || x >= szerokosc || (y == p.getY() && x == p.getX()))){
+                    Punkt pole = new Punkt(x,y);
                     sasiedniePola.add(pole);
                 }
             }
@@ -128,17 +129,16 @@ public class Swiat {
         if (!sasiedniePola.isEmpty())
             return sasiedniePola.get(rand.nextInt(sasiedniePola.size()));
         else
-            return pole;
+            return zajete;
     }
 
     public Punkt losujSasiedniePoleR2(Punkt p){
         Vector<Punkt> sasiedniePola = new Vector<Punkt>();
-        Punkt pole = new Punkt(-1,-1);
+        Punkt zajete = new Punkt(-1,-1);
         for(int y = p.getX() - 2; y < p.getY() + 3; y++){
             for (int x = p.getX() - 2; x < p.getX() + 3; x++){
-                if (!(y < 0 || y > wysokosc || x < 0 || x > szerokosc)){
-                    pole.setX(x);
-                    pole.setY(y);
+                if (!(y < 0 || y >= wysokosc || x < 0 || x >= szerokosc)){
+                    Punkt pole = new Punkt(x,y);
                     sasiedniePola.add(pole);
                 }
             }
@@ -147,7 +147,7 @@ public class Swiat {
         if (!sasiedniePola.isEmpty())
             return sasiedniePola.get(rand.nextInt(sasiedniePola.size()));
         else
-            return pole;
+            return zajete;
     }
 
     public void wyczyscKomentarze(){
@@ -187,7 +187,7 @@ public class Swiat {
     }
 
     public void usunMartweOrganizmy(){
-        for(Organizm org : organizmy){
+        for(Organizm org : zabiteOrganizmy){
             if(!org.czyZyje())
                 usunOrganizm(org);
         }
@@ -229,10 +229,7 @@ public class Swiat {
         Vector<Punkt> sasiedniePola = new Vector<>();
         for (int y = p.getY() - 1; y < p.getY() + 2; y++) {
             for (int x = p.getX() - 1; x < p.getX() + 2; x++) {
-                if (y < 0 || y > this.wysokosc - 1 || x < 0 || x > this.szerokosc - 1){
-                    ;
-                }
-                else {
+                if (!(y < 0 || y > this.wysokosc - 1 || x < 0 || x > this.szerokosc - 1 || (y == p.getY() && x == p.getX()))){
                     Punkt ptmp = new Punkt(x, y);
                     if (this.getOrganizmNaPozycji(ptmp) == null)
                         sasiedniePola.addElement(ptmp);
@@ -248,34 +245,35 @@ public class Swiat {
     }
 
     public Organizm stworzOrganizm(String orgString, Punkt p, Swiat swiat){
-        Vector<Organizm> v = new Vector<>();
         if (organizmy.size() < wysokosc*szerokosc) {
             if (Objects.equals(orgString, "czlowiek")) {
                 Czlowiek org = new Czlowiek(swiat, p);
                 return org;
-                //v.addElement(org);
-            } else if (Objects.equals(orgString, "trawa")) {
+            }
+            else if (Objects.equals(orgString, "trawa")) {
                 Trawa org = new Trawa(swiat, p);
                 return org;
-                //v.addElement(org);
-            } else if (Objects.equals(orgString, "mlecz")) {
+            }
+            else if (Objects.equals(orgString, "mlecz")) {
                 Mlecz org = new Mlecz(swiat, p);
                 return org;
-                //v.addElement(org);
-            } else if (Objects.equals(orgString, "guarana")) {
+            }
+            else if (Objects.equals(orgString, "guarana")) {
                 Guarana org = new Guarana(swiat, p);
                 return org;
-                //v.addElement(org);
-            } else if (Objects.equals(orgString, "wilcze_jagody")) {
+            }
+            else if (Objects.equals(orgString, "wilcze_jagody")) {
                 WilczeJagody org = new WilczeJagody(swiat, p);
                 return org;
-                //v.addElement(org);
-            } else if (Objects.equals(orgString, "barszcz_sosnowskiego")) {
+           }
+            else if (Objects.equals(orgString, "barszcz_sosnowskiego")) {
                 BarszczSosnowskiego org = new BarszczSosnowskiego(swiat, p);
                 return org;
-                //v.addElement(org);
+           }
+            else if (Objects.equals(orgString, "wilk")) {
+                Wilk org = new Wilk(swiat, p);
+                return org;
             }
-            //return v.get(0);
         }
         return null;
     }
