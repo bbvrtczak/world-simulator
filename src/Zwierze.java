@@ -1,16 +1,18 @@
+import java.util.Objects;
+
 public abstract class Zwierze extends Organizm {
 
     private static final int NIE_PORUSZA_SIE = 0;
 
     public abstract String organizmToString();
 
-    public Zwierze(){
+    protected Zwierze(){
         sila = 0;
         wiek = 0;
         swiat = null;
     }
 
-    public Zwierze(Organizm other){
+    protected Zwierze(Organizm other){
         sila = other.getSila();
         wiek = 0;
         swiat = other.getSwiat();
@@ -51,7 +53,7 @@ public abstract class Zwierze extends Organizm {
             organizmNaNowejPozycji.kolizja(organizmAtakujacy);
         }
         else{
-            if (organizmAtakujacy.organizmToString() == organizmNaNowejPozycji.organizmToString()){ //TODO:  && !(organizmAtakujacy instanceof Czlowiek)
+            if (Objects.equals(organizmAtakujacy.organizmToString(), organizmNaNowejPozycji.organizmToString()) && !(organizmAtakujacy instanceof Czlowiek)){
                 if (organizmAtakujacy.getIleDoRozmnozenia() == 0 && organizmNaNowejPozycji.getIleDoRozmnozenia() == 0){
                     if (!swiat.czyJestWolnePole()){
                         czySieRozmnozyl = true;
@@ -71,13 +73,13 @@ public abstract class Zwierze extends Organizm {
     }
 
     void ruch(Punkt nowePole){
-        if (swiat.czyCzlowiekSieRusza() != NIE_PORUSZA_SIE){ //TODO:  this instanceof Czlowiek &&
+        if (this instanceof Czlowiek && swiat.czyCzlowiekSieRusza() != NIE_PORUSZA_SIE){
             nowePole = swiat.getNowePoleCzlowieka();
             if (nowePole == getPozycja()) {
                 return;
             }
         }
-        else if (swiat.czyCzlowiekSieRusza() == NIE_PORUSZA_SIE) { //TODO:  this instanceof Czlowiek &&
+        else if (this instanceof Czlowiek && swiat.czyCzlowiekSieRusza() == NIE_PORUSZA_SIE) {
             return;
         }
 

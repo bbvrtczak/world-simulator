@@ -1,5 +1,4 @@
-import java.util.Random;
-import java.util.Vector;
+import java.util.*;
 
 public class Swiat {
 
@@ -37,6 +36,7 @@ public class Swiat {
             if (!czyCzlowiekZyje){
                 dodajKomentarz("czlowiek nie zyje - nie mozna sie ruszyc");
             }
+
             sortujOrganizmy();
 
             for (Organizm org : organizmy){
@@ -66,12 +66,11 @@ public class Swiat {
         }
     }
 
-    public void sortujOrganizmy(){ //TODO: sortowanie organizmow
-
-    }
-
     public void przygotujSwiat(Swiat swiat){
         //dodawanie organizmow
+        organizmy = new Vector<>();
+        dodaneOrganizmy = new Vector<>();
+        komentarze = new Vector<>();
         organizmy.addElement(stworzOrganizm("trawa", losujWolnePole(), swiat));
     }
 
@@ -121,7 +120,7 @@ public class Swiat {
             }
         }
         Random rand = new Random();
-        if (sasiedniePola.size() > 0)
+        if (!sasiedniePola.isEmpty())
             return sasiedniePola.get(rand.nextInt(sasiedniePola.size()));
         else
             return pole;
@@ -141,7 +140,7 @@ public class Swiat {
             }
         }
         Random rand = new Random();
-        if (sasiedniePola.size() > 0)
+        if (!sasiedniePola.isEmpty())
             return sasiedniePola.get(rand.nextInt(sasiedniePola.size()));
         else
             return pole;
@@ -245,8 +244,8 @@ public class Swiat {
     }
 
     public Organizm stworzOrganizm(String orgString, Punkt p, Swiat swiat){
-        Vector<Organizm> v = new Vector<Organizm>();
-        if(orgString == "trawa"){
+        Vector<Organizm> v = new Vector<>();
+        if(Objects.equals(orgString, "trawa")){
             Trawa trawa = new Trawa(swiat, p);
             v.addElement(trawa);
         }
@@ -285,5 +284,14 @@ public class Swiat {
         }
         kierunekCzlowieka = NIE_PORUSZA_SIE;
         return nowePole;
+    }
+
+    public void sortujOrganizmy() {
+        organizmy.sort((o1, o2) -> {
+            if (o1.getInicjatywa() != o2.getInicjatywa())
+                return Integer.compare(o2.getInicjatywa(), o1.getInicjatywa());
+            else
+                return Integer.compare(o1.getWiek(), o2.getWiek());
+        });
     }
 }
