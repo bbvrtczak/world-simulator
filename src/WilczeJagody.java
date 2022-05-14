@@ -3,8 +3,7 @@ import java.util.Random;
 public class WilczeJagody extends Roslina {
     @Override
     public void akcja() {
-        int wspolczynnikRozsiania = 5; //TODO: zmienic
-
+        int wspolczynnikRozsiania = 5;
         Random rand = new Random();
         int szansa = rand.nextInt(100);
         if (szansa < wspolczynnikRozsiania){
@@ -14,7 +13,7 @@ public class WilczeJagody extends Roslina {
 
     @Override
     public void rysowanie() {
-
+        System.out.print("J ");
     }
 
     @Override

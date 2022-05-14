@@ -73,6 +73,9 @@ public abstract class Organizm {
     public void zabij(){
         zyje = false;
         swiat.zabiteOrganizmy.addElement(this);
+        if (this instanceof Czlowiek){
+            swiat.czyCzlowiekZyje = false;
+        }
     }
 
     public void rozmnozylSie(){

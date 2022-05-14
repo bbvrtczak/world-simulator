@@ -1,15 +1,21 @@
-import java.util.Random;
-
-public class Wilk extends Zwierze{
+public class Lis extends Zwierze{
     @Override
     public void akcja() {
-        Punkt nowePole = swiat.losujSasiedniePole(pozycja);
+        int iloscProb = 0;
+        Punkt nowePole;
+        do{
+            if (iloscProb > 20){
+                return;
+            }
+            nowePole = swiat.losujSasiedniePole(pozycja);
+            iloscProb++;
+        }while(swiat.getOrganizmNaPozycji(nowePole) != null && swiat.getOrganizmNaPozycji(nowePole).getSila() > sila);
         ruch(nowePole);
     }
 
     @Override
     public void rysowanie() {
-        System.out.print("W ");
+
     }
 
     @Override
@@ -19,12 +25,12 @@ public class Wilk extends Zwierze{
 
     @Override
     public String organizmToString() {
-        return "wilk";
+        return "lis";
     }
 
-    Wilk(Swiat s, Punkt p){
-        sila = 9;
-        inicjatywa = 5;
+    Lis(Swiat s, Punkt p){
+        sila = 3;
+        inicjatywa = 7;
         wiek = 0;
         swiat = s;
         pozycja = p;

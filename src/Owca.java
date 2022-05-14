@@ -1,6 +1,4 @@
-import java.util.Random;
-
-public class Wilk extends Zwierze{
+public class Owca extends Zwierze{
     @Override
     public void akcja() {
         Punkt nowePole = swiat.losujSasiedniePole(pozycja);
@@ -9,22 +7,22 @@ public class Wilk extends Zwierze{
 
     @Override
     public void rysowanie() {
-        System.out.print("W ");
+
     }
 
     @Override
     public void specyfikaKolizji(Organizm org) {
-
+        System.out.print("O ");
     }
 
     @Override
     public String organizmToString() {
-        return "wilk";
+        return "owca";
     }
 
-    Wilk(Swiat s, Punkt p){
-        sila = 9;
-        inicjatywa = 5;
+    public Owca(Swiat s, Punkt p){
+        sila = 4;
+        inicjatywa = 4;
         wiek = 0;
         swiat = s;
         pozycja = p;

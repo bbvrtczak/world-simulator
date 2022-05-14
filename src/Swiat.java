@@ -1,4 +1,8 @@
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.*;
+import java.io.File;
 
 public class Swiat {
 
@@ -18,7 +22,26 @@ public class Swiat {
     protected Vector<Organizm> zabiteOrganizmy;
     protected Vector<String> komentarze;
 
+    public void rysujSwiat(){
+        System.out.println("----------------------------");
+        for (int h=0;h<wysokosc;h++){
+            for (int w=0;w<szerokosc;w++){
+                Punkt p = new Punkt(w,h);
+                Organizm org = getOrganizmNaPozycji(p);
+                if (org != null)
+                    org.rysowanie();
+                else
+                    System.out.print("  ");
+                System.out.print(" | ");
+            }
+            System.out.println();
+            System.out.println("--------------------");
+        }
+        System.out.println("----------------------------");
+    }
+
     public void wykonajTure(){
+        rysujSwiat();
         dodaneOrganizmy.clear();
         komentarze.clear();
 
@@ -72,13 +95,19 @@ public class Swiat {
         dodaneOrganizmy = new Vector<>();
         zabiteOrganizmy = new Vector<>();
         komentarze = new Vector<>();
-        //organizmy.addElement(stworzOrganizm("czlowiek", losujWolnePole(), swiat));
-        //organizmy.addElement(stworzOrganizm("trawa", losujWolnePole(), swiat));
-        //organizmy.addElement(stworzOrganizm("mlecz", losujWolnePole(), swiat));
-        organizmy.addElement(stworzOrganizm("guarana", losujWolnePole(), swiat));
-        //organizmy.addElement(stworzOrganizm("wilcze_jagody", losujWolnePole(), swiat));
-        //organizmy.addElement(stworzOrganizm("barszcz_sosnowskiego", losujWolnePole(), swiat));
-        organizmy.addElement(stworzOrganizm("wilk", losujWolnePole(), swiat));
+        organizmy.addElement(stworzOrganizm("czlowiek", losujWolnePole(), swiat));
+        for (int i = 0; i < 2; i++) {
+            organizmy.addElement(stworzOrganizm("trawa", losujWolnePole(), swiat));
+            organizmy.addElement(stworzOrganizm("mlecz", losujWolnePole(), swiat));
+            organizmy.addElement(stworzOrganizm("guarana", losujWolnePole(), swiat));
+            organizmy.addElement(stworzOrganizm("wilcze_jagody", losujWolnePole(), swiat));
+            organizmy.addElement(stworzOrganizm("barszcz_sosnowskiego", losujWolnePole(), swiat));
+            organizmy.addElement(stworzOrganizm("wilk", losujWolnePole(), swiat));
+            organizmy.addElement(stworzOrganizm("owca", losujWolnePole(), swiat));
+            organizmy.addElement(stworzOrganizm("lis", losujWolnePole(), swiat));
+            organizmy.addElement(stworzOrganizm("zolw", losujWolnePole(), swiat));
+            organizmy.addElement(stworzOrganizm("antylopa", losujWolnePole(), swiat));
+        }
     }
 
     public Swiat getSwiat(){
@@ -89,7 +118,7 @@ public class Swiat {
         this.wysokosc = wysokosc;
         this.szerokosc = szerokosc;
         numerTury = 0;
-        czyCzlowiekZyje = false;
+        czyCzlowiekZyje = true;
         kierunekCzlowieka = NIE_PORUSZA_SIE;
     }
 
@@ -150,10 +179,6 @@ public class Swiat {
             return zajete;
     }
 
-    public void wyczyscKomentarze(){
-        komentarze.clear();
-    }
-
     public void dodajOrganizm(Organizm org){
         organizmy.add(org);
     }
@@ -170,20 +195,8 @@ public class Swiat {
         return dodaneOrganizmy;
     }
 
-    /*public int getIndexOrganizmu(Organizm szukany){
-        int index = 0;
-        for (Organizm org : organizmy){
-            if (szukany == org)
-                return index;
-            index++;
-        }
-        return -1;
-    }*/
-
     public void usunOrganizm(Organizm org){
-        //int index = getIndexOrganizmu(org);
-        //if (index != -1)
-            organizmy.remove(org);
+        organizmy.remove(org);
     }
 
     public void usunMartweOrganizmy(){
@@ -211,10 +224,6 @@ public class Swiat {
                 return org.getPozycja();
         }
         return new Punkt(-1,-1);
-    }
-
-    public void zabijCzlowieka(){
-        czyCzlowiekZyje = false;
     }
 
     public int wKtoraStroneRuszySieCzlowiek(){
@@ -274,6 +283,22 @@ public class Swiat {
                 Wilk org = new Wilk(swiat, p);
                 return org;
             }
+            else if (Objects.equals(orgString, "owca")) {
+                Owca org = new Owca(swiat, p);
+                return org;
+            }
+            else if (Objects.equals(orgString, "lis")) {
+                Lis org = new Lis(swiat, p);
+                return org;
+            }
+            else if (Objects.equals(orgString, "zolw")) {
+                Zolw org = new Zolw(swiat, p);
+                return org;
+            }
+            else if (Objects.equals(orgString, "antylopa")) {
+                Antylopa org = new Antylopa(swiat, p);
+                return org;
+            }
         }
         return null;
     }
@@ -319,5 +344,62 @@ public class Swiat {
             else
                 return Integer.compare(o1.getWiek(), o2.getWiek());
         });
+    }
+
+    public void zapiszGre(){
+        File saveFile = new File("save.txt");
+        try {
+            FileWriter save = new FileWriter("save.txt");
+
+            save.write(wysokosc + " " + szerokosc + " " + numerTury + " " + czyCzlowiekZyje);
+            for (Organizm org : organizmy){
+                save.write("\n");
+                save.write(org.organizmToString() + " " + org.getPosX() + " " + org.getPosY() + " " + org.getSila() + " " + org.getInicjatywa() + " " + org.getWiek() + " " + org.getIleDoRozmnozenia());
+                if (org instanceof Czlowiek){
+                    Czlowiek czl = (Czlowiek) org;
+                    save.write(" " + czl.getIloscTur() + " " + czl.getUmiejetnoscCooldown());
+                }
+            }
+            save.close();
+        } catch (IOException e){
+            System.out.println("There was an error saving your game");
+            e.printStackTrace();
+        }
+    }
+
+    public void wczytajGre(Swiat swiat) throws FileNotFoundException {
+        File readSave = new File("save.txt");
+        Scanner save = new Scanner(readSave);
+        int data, x, y, sila, inicjatywa, wiek, rozmnozenie, umiejetnoscTury = 0, umiejetnoscCooldown = 0;
+        String nazwaOrganizmu;
+        wysokosc = save.nextInt();
+        szerokosc = save.nextInt();
+        numerTury = save.nextInt();
+        czyCzlowiekZyje = save.nextBoolean();
+        while (save.hasNext()) {
+            nazwaOrganizmu = save.next();
+            x = save.nextInt();
+            y = save.nextInt();
+            sila = save.nextInt();
+            inicjatywa = save.nextInt();
+            wiek = save.nextInt();
+            rozmnozenie = save.nextInt();
+            if (Objects.equals(nazwaOrganizmu, "czlowiek")) {
+                umiejetnoscTury = save.nextInt();
+                umiejetnoscCooldown = save.nextInt();
+            }
+            Punkt pole = new Punkt(x, y);
+            organizmy.addElement(stworzOrganizm(nazwaOrganizmu, pole, swiat));
+            Organizm org = getOrganizmNaPozycji(pole);
+            org.setSila(sila);
+            org.setInicjatywa(inicjatywa);
+            org.setWiek(wiek);
+            org.setIleDoRozmnozenia(rozmnozenie);
+            if (Objects.equals(nazwaOrganizmu, "czlowiek")) {
+                Czlowiek czl = (Czlowiek) org;
+                czl.setTuryUmiejetnosci(umiejetnoscTury);
+                czl.setCooldownUmiejetnosci(umiejetnoscCooldown);
+            }
+        }
     }
 }

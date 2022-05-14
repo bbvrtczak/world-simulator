@@ -16,7 +16,7 @@ public class Mlecz extends Roslina{
 
     @Override
     public void rysowanie() {
-
+        System.out.print("M ");
     }
 
     @Override

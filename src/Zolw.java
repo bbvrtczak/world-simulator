@@ -1,6 +1,4 @@
-import java.util.Random;
-
-public class Wilk extends Zwierze{
+public class Zolw extends Zwierze{
     @Override
     public void akcja() {
         Punkt nowePole = swiat.losujSasiedniePole(pozycja);
@@ -9,22 +7,27 @@ public class Wilk extends Zwierze{
 
     @Override
     public void rysowanie() {
-        System.out.print("W ");
+
     }
 
     @Override
-    public void specyfikaKolizji(Organizm org) {
-
+    public void specyfikaKolizji(Organizm atakujacy) {
+        if (atakujacy.getSila() < 5){
+            niesmiertelnosc = 1;
+            odbilAtak = true;
+            atakujacy.wylaczRuch();
+            swiat.dodajKomentarz("zolw odbil atak " + atakujacy.organizmToString());
+        }
     }
 
     @Override
     public String organizmToString() {
-        return "wilk";
+        return "zolw";
     }
 
-    Wilk(Swiat s, Punkt p){
-        sila = 9;
-        inicjatywa = 5;
+    Zolw(Swiat s, Punkt p){
+        sila = 2;
+        inicjatywa = 1;
         wiek = 0;
         swiat = s;
         pozycja = p;

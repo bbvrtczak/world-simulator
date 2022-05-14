@@ -3,7 +3,7 @@ import java.util.Random;
 public class BarszczSosnowskiego extends Roslina{
     @Override
     public void akcja() {
-        int wspolczynnikRozsiania = 5; //TODO: zmienic
+        int wspolczynnikRozsiania = 5;
 
         Random rand = new Random();
         int szansa = rand.nextInt(100);
@@ -18,7 +18,7 @@ public class BarszczSosnowskiego extends Roslina{
                     p.setY(y);
                     p.setX(x);
                     Organizm org = swiat.getOrganizmNaPozycji(p);
-                    if (org instanceof Roslina) {
+                    if (org instanceof Zwierze) {
                         swiat.dodajKomentarz("barszcz sosnowskiego zabil " + org.organizmToString());
                         org.zabij();
                     }
@@ -29,7 +29,7 @@ public class BarszczSosnowskiego extends Roslina{
 
     @Override
     public void rysowanie() {
-
+        System.out.print("B ");
     }
 
     @Override

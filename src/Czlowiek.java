@@ -28,7 +28,7 @@ public class Czlowiek extends Zwierze{
 
     @Override
     public void rysowanie() {
-
+        System.out.print("C ");
     }
 
     @Override

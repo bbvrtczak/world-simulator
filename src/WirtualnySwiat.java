@@ -18,6 +18,7 @@ public class WirtualnySwiat {
 
         swiat.przygotujSwiat(swiat);
 
+        swiat.zapiszGre();
 
         for(int i=0; i < 100; i++){
            swiat.wykonajTure();
