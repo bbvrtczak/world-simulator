@@ -1,18 +1,16 @@
 import java.util.Random;
 
-public class Trawa extends Roslina {
-    public Trawa(Organizm other) {
-        super(other);
-    }
-
+public class Mlecz extends Roslina{
     @Override
     public void akcja() {
         int wspolczynnikRozsiania = 5; //TODO: zmienic
 
         Random rand = new Random();
-        int szansa = rand.nextInt(100);
-        if (szansa < wspolczynnikRozsiania){
-            rozsianie();
+        for (int i = 0; i < 3; i++) {
+            int szansa = rand.nextInt(100);
+            if (szansa < wspolczynnikRozsiania) {
+                rozsianie();
+            }
         }
     }
 
@@ -27,11 +25,11 @@ public class Trawa extends Roslina {
     }
 
     @Override
-    public String organizmToString(){
-        return "trawa";
+    public String organizmToString() {
+        return "mlecz";
     }
 
-    Trawa(Swiat s, Punkt p){
+    Mlecz(Swiat s, Punkt p){
         sila = 0;
         wiek = 0;
         swiat = s;

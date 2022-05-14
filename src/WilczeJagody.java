@@ -1,10 +1,6 @@
 import java.util.Random;
 
-public class Trawa extends Roslina {
-    public Trawa(Organizm other) {
-        super(other);
-    }
-
+public class WilczeJagody extends Roslina {
     @Override
     public void akcja() {
         int wspolczynnikRozsiania = 5; //TODO: zmienic
@@ -22,16 +18,17 @@ public class Trawa extends Roslina {
     }
 
     @Override
-    public void specyfikaKolizji(Organizm org) {
-
+    public void specyfikaKolizji(Organizm zwierze) {
+        zwierze.zabij();
+        swiat.dodajKomentarz(zwierze.organizmToString() + " zjadl wilcze jagody i umarl");
     }
 
     @Override
-    public String organizmToString(){
-        return "trawa";
+    public String organizmToString() {
+        return "wilcze_jagody";
     }
 
-    Trawa(Swiat s, Punkt p){
+    WilczeJagody(Swiat s, Punkt p){
         sila = 0;
         wiek = 0;
         swiat = s;

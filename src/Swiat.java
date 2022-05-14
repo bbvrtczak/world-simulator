@@ -22,15 +22,15 @@ public class Swiat {
         komentarze.clear();
 
         if (czyCzlowiekZyje){
-            //Czlowiek org = new Czlowiek(); TODO: zrobic czlowieka
-            Organizm orgg = getOrganizmNaPozycji(getPozycjaCzlowieka());  //getter czlowieka
-            //TODO: dynamic cast na czlowieka (?) / zamienic ^ na czlowieka
-            if(true){ //TODO: org.czyUzywaUmiejetnosci()
-                dodajKomentarz("czlowiek uzywa umiejetnosci - pozostalo " ); //TODO: + int to string org.getIloscTur() + " tur"
-                //TODO: zmniejszyc cooldown specjalnej umiejetnosci
+            Czlowiek czl;
+            Organizm organizmCzlowieka = getOrganizmNaPozycji(getPozycjaCzlowieka());  //getter czlowieka
+            czl = (Czlowiek) organizmCzlowieka;
+            if(czl.czyUzywaUmiejetnosci()){
+                dodajKomentarz("czlowiek uzywa umiejetnosci - pozostalo " + czl.getIloscTur() + " tur");
+                czl.zmniejszCooldown();
             }
-            else if(true){ //TODO: sprawdzenie czy cooldown umiejetnosci > 0
-                //TODO: zmniejszenie cooldownu
+            else if(czl.getUmiejetnoscCooldown() > 0){
+                czl.zmniejszCooldown();
             }
 
             if (!czyCzlowiekZyje){
@@ -71,7 +71,12 @@ public class Swiat {
         organizmy = new Vector<>();
         dodaneOrganizmy = new Vector<>();
         komentarze = new Vector<>();
+        organizmy.addElement(stworzOrganizm("czlowiek", losujWolnePole(), swiat));
         organizmy.addElement(stworzOrganizm("trawa", losujWolnePole(), swiat));
+        organizmy.addElement(stworzOrganizm("mlecz", losujWolnePole(), swiat));
+        organizmy.addElement(stworzOrganizm("guarana", losujWolnePole(), swiat));
+        organizmy.addElement(stworzOrganizm("wilcze_jagody", losujWolnePole(), swiat));
+        organizmy.addElement(stworzOrganizm("barszcz_sosnowskiego", losujWolnePole(), swiat));
     }
 
     public Swiat getSwiat(){
@@ -88,14 +93,14 @@ public class Swiat {
 
     public Organizm getOrganizmNaPozycji(Punkt p){
         for(Organizm org : organizmy){
-            if(org.getPozycja() == p)
+            if(Objects.equals(org.getPozycja(), p))
                 return org;
         }
         return null;
     }
 
     public Punkt losujWolnePole(){
-        Punkt pole = new Punkt();
+        Punkt pole = new Punkt(-1,-1);
         Random rand = new Random();
         do{
             pole.setX(rand.nextInt(szerokosc));
@@ -111,14 +116,14 @@ public class Swiat {
         Punkt pole = new Punkt(-1,-1);
         for(int y = p.getX() - 1; y < p.getY() + 2; y++){
             for (int x = p.getX() - 1; x < p.getX() + 2; x++){
-                if (y < 0 || y > wysokosc || x < 0 || x > szerokosc) continue;
-                else{
+                if (!(y < 0 || y > wysokosc || x < 0 || x > szerokosc)){
                     pole.setX(x);
                     pole.setY(y);
                     sasiedniePola.add(pole);
                 }
             }
         }
+
         Random rand = new Random();
         if (!sasiedniePola.isEmpty())
             return sasiedniePola.get(rand.nextInt(sasiedniePola.size()));
@@ -131,8 +136,7 @@ public class Swiat {
         Punkt pole = new Punkt(-1,-1);
         for(int y = p.getX() - 2; y < p.getY() + 3; y++){
             for (int x = p.getX() - 2; x < p.getX() + 3; x++){
-                if (y < 0 || y > wysokosc || x < 0 || x > szerokosc);
-                else{
+                if (!(y < 0 || y > wysokosc || x < 0 || x > szerokosc)){
                     pole.setX(x);
                     pole.setY(y);
                     sasiedniePola.add(pole);
@@ -203,7 +207,7 @@ public class Swiat {
 
     public Punkt getPozycjaCzlowieka(){
         for(Organizm org : organizmy){
-            if (org instanceof Trawa) //TODO: zmienic na czlowieka
+            if (org instanceof Czlowiek)
                 return org.getPozycja();
         }
         return new Punkt(-1,-1);
@@ -222,7 +226,7 @@ public class Swiat {
     }
 
     public Punkt losujWolneSasiedniePole(Punkt p){
-        Vector<Punkt> sasiedniePola = new Vector<Punkt>();
+        Vector<Punkt> sasiedniePola = new Vector<>();
         for (int y = p.getY() - 1; y < p.getY() + 2; y++) {
             for (int x = p.getX() - 1; x < p.getX() + 2; x++) {
                 if (y < 0 || y > this.wysokosc - 1 || x < 0 || x > this.szerokosc - 1){
@@ -245,11 +249,35 @@ public class Swiat {
 
     public Organizm stworzOrganizm(String orgString, Punkt p, Swiat swiat){
         Vector<Organizm> v = new Vector<>();
-        if(Objects.equals(orgString, "trawa")){
-            Trawa trawa = new Trawa(swiat, p);
-            v.addElement(trawa);
+        if (organizmy.size() < wysokosc*szerokosc) {
+            if (Objects.equals(orgString, "czlowiek")) {
+                Czlowiek org = new Czlowiek(swiat, p);
+                return org;
+                //v.addElement(org);
+            } else if (Objects.equals(orgString, "trawa")) {
+                Trawa org = new Trawa(swiat, p);
+                return org;
+                //v.addElement(org);
+            } else if (Objects.equals(orgString, "mlecz")) {
+                Mlecz org = new Mlecz(swiat, p);
+                return org;
+                //v.addElement(org);
+            } else if (Objects.equals(orgString, "guarana")) {
+                Guarana org = new Guarana(swiat, p);
+                return org;
+                //v.addElement(org);
+            } else if (Objects.equals(orgString, "wilcze_jagody")) {
+                WilczeJagody org = new WilczeJagody(swiat, p);
+                return org;
+                //v.addElement(org);
+            } else if (Objects.equals(orgString, "barszcz_sosnowskiego")) {
+                BarszczSosnowskiego org = new BarszczSosnowskiego(swiat, p);
+                return org;
+                //v.addElement(org);
+            }
+            //return v.get(0);
         }
-        return v.get(0);
+        return null;
     }
 
     public int czyCzlowiekSieRusza() {

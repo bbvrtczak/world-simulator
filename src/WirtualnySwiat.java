@@ -19,7 +19,7 @@ public class WirtualnySwiat {
         swiat.przygotujSwiat(swiat);
 
 
-        for(int i=0; i < 5; i++){
+        for(int i=0; i < 100; i++){
            swiat.wykonajTure();
         }
 

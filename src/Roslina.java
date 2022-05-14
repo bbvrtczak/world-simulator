@@ -1,3 +1,5 @@
+import java.util.Objects;
+
 public abstract class Roslina extends Organizm{
 
     public Roslina(Organizm other){
@@ -32,7 +34,7 @@ public abstract class Roslina extends Organizm{
         Punkt nowePole = new Punkt(-1,-1);
         nowePole = this.getSwiat().losujWolneSasiedniePole(this.getPozycja());
 
-        if (nowePole == p)
+        if (Objects.equals(nowePole, p))
             return;
 
         for(Organizm org : this.swiat.getDodaneOrganizmy()){
