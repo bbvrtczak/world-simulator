@@ -45,7 +45,7 @@ public abstract class Roslina extends Organizm{
 
             nowaRoslina = this.swiat.stworzOrganizm(this.organizmToString(), nowePole, swiat);
             this.swiat.dodajOrganizmTymczasowy(nowaRoslina);
-            this.swiat.dodajKomentarz(this.organizmToString() + "rozrosl sie");
+            this.swiat.dodajKomentarz(this.organizmToString() + " rozrosl sie");
         }
     }
 }
