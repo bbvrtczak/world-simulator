@@ -46,4 +46,9 @@ public class Antylopa extends Zwierze{
         czyMozeSieRuszyc = true;
         rozum = false;
     }
+
+    public String show(){
+        return "A ";
+    }
+
 }

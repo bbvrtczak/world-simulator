@@ -138,4 +138,7 @@ public abstract class Organizm {
         if (niesmiertelnosc > 0)
             niesmiertelnosc--;
     }
+
+    public abstract String show();
+
 }

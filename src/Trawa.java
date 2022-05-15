@@ -38,4 +38,8 @@ public class Trawa extends Roslina {
         pozycja = p;
         zyje = true;
     }
+
+    public String show(){
+        return "T ";
+    }
 }

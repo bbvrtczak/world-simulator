@@ -49,4 +49,8 @@ public class BarszczSosnowskiego extends Roslina{
         pozycja = p;
         zyje = true;
     }
+
+    public String show(){
+        return "B ";
+    }
 }

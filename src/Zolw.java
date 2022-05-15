@@ -39,4 +39,8 @@ public class Zolw extends Zwierze{
         czyMozeSieRuszyc = true;
         rozum = false;
     }
+
+    public String show(){
+        return "Z ";
+    }
 }

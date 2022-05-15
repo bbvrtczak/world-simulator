@@ -118,4 +118,7 @@ public abstract class Zwierze extends Organizm {
         czySieRozmnozyl = true;
         swiat.dodajKomentarz(organizmToString() + " rozmnozyl sie");
     }
+
+    public abstract String show();
+
 }

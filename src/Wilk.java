@@ -36,4 +36,8 @@ public class Wilk extends Zwierze{
         czyMozeSieRuszyc = true;
         rozum = false;
     }
+
+    public String show(){
+        return "W ";
+    }
 }

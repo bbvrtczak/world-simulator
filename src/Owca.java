@@ -34,4 +34,8 @@ public class Owca extends Zwierze{
         czyMozeSieRuszyc = true;
         rozum = false;
     }
+
+    public String show(){
+        return "O ";
+    }
 }

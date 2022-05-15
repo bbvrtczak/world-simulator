@@ -55,19 +55,21 @@ public class Menu extends JFrame {
     private void startGame(){
         this.dispose();
 
-        int szer = Integer.parseInt(szerokosc.getText());
-        int wys = Integer.parseInt(wysokosc.getText());
-
-        Swiat swiat = new Swiat(szer,wys);
-
         if (loadGame == 1) {
             try {
+                swiat = new Swiat(10,10);
                 swiat.wczytajGre(swiat);
             } catch (FileNotFoundException ex) {
                 ex.printStackTrace();
             }
         }
         else {
+
+            int szer = Integer.parseInt(szerokosc.getText());
+            int wys = Integer.parseInt(wysokosc.getText());
+
+            swiat = new Swiat(szer,wys);
+
             swiat.przygotujSwiat(swiat);
         }
 

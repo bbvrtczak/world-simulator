@@ -1,23 +1,20 @@
-11 11 24 true
-wilk 1 1 9 5 24 0
-czlowiek 3 5 5 4 24 0 0 0
-trawa 3 1 0 0 1 0
-mlecz 7 4 0 0 1 0
-guarana 0 9 0 0 4 0
-mlecz 7 5 0 0 5 0
-guarana 0 8 0 0 7 0
-guarana 1 7 0 0 7 0
-trawa 5 1 0 0 8 0
-trawa 7 1 0 0 8 0
-trawa 4 1 0 0 12 0
-guarana 0 5 0 0 13 0
-trawa 7 0 0 0 14 0
-trawa 4 0 0 0 15 0
-guarana 1 8 0 0 18 0
-trawa 6 1 0 0 23 0
-guarana 0 7 0 0 24 0
-trawa 5 0 0 0 24 0
-mlecz 6 5 0 0 24 0
-guarana 0 6 0 0 24 0
-barszcz_sosnowskiego 3 9 10 0 24 0
-trawa 8 1 0 0 0 0
+6 6 7 true
+lis 2 4 6 7 7 0
+wilk 3 4 12 5 7 0
+wilk 1 3 9 5 7 0
+czlowiek 1 2 5 4 7 0 0 0
+mlecz 4 1 0 0 1 0
+mlecz 5 0 0 0 3 0
+wilcze_jagody 3 5 99 0 3 0
+mlecz 1 4 0 0 4 0
+wilcze_jagody 5 5 99 0 4 0
+mlecz 0 5 0 0 5 0
+wilcze_jagody 5 4 99 0 5 0
+mlecz 1 5 0 0 6 0
+mlecz 4 0 0 0 6 0
+wilcze_jagody 4 5 99 0 6 0
+mlecz 0 4 0 0 7 0
+wilcze_jagody 4 4 99 0 7 0
+mlecz 2 5 0 0 0 0
+mlecz 0 3 0 0 0 0
+mlecz 0 3 0 0 0 0

@@ -84,4 +84,8 @@ public class Czlowiek extends Zwierze{
     public void setCooldownUmiejetnosci(int c){
         umiejetnoscCooldown = c;
     }
+
+    public String show(){
+        return "C ";
+    }
 }

@@ -48,4 +48,7 @@ public abstract class Roslina extends Organizm{
             this.swiat.dodajKomentarz(this.organizmToString() + " rozrosl sie");
         }
     }
+
+    public abstract String show();
+
 }

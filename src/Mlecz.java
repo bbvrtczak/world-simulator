@@ -36,4 +36,8 @@ public class Mlecz extends Roslina{
         pozycja = p;
         zyje = true;
     }
+
+    public String show(){
+        return "M ";
+    }
 }

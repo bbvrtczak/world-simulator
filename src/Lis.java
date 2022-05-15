@@ -42,4 +42,8 @@ public class Lis extends Zwierze{
         czyMozeSieRuszyc = true;
         rozum = false;
     }
+
+    public String show(){
+        return "L ";
+    }
 }

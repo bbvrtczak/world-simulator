@@ -368,6 +368,10 @@ public class Swiat {
     }
 
     public void wczytajGre(Swiat swiat) throws FileNotFoundException {
+        organizmy = new Vector<>();
+        dodaneOrganizmy = new Vector<>();
+        zabiteOrganizmy = new Vector<>();
+        komentarze = new Vector<>();
         File readSave = new File("save.txt");
         Scanner save = new Scanner(readSave);
         int data, x, y, sila, inicjatywa, wiek, rozmnozenie, umiejetnoscTury = 0, umiejetnoscCooldown = 0;
