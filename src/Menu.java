@@ -20,15 +20,17 @@ public class Menu extends JFrame {
 
         szerokosc = new JTextField("");
         wysokosc = new JTextField("");
-        szerokosc.setBounds(200,200,200,100);
-        wysokosc.setBounds(500,200,200,100);
-        szerokosc.setFont(new Font("Arial", Font.PLAIN, 30));
-        wysokosc.setFont(new Font("Arial", Font.PLAIN, 30));
+        wysokosc.setBounds(200,200,200,100);
+        szerokosc.setBounds(500,200,200,100);
+        szerokosc.setFont(new Font("Arial", Font.PLAIN, 50));
+        wysokosc.setFont(new Font("Arial", Font.PLAIN, 50));
 
         JLabel szerLabel = new JLabel("Szerokosc");
-        JLabel wysLabel = new JLabel("wysokosc");
-        szerLabel.setBounds(275,125,200,100);
-        wysLabel.setBounds(575,125,200,100);
+        JLabel wysLabel = new JLabel("Wysokosc");
+        szerLabel.setBounds(220,125,200,100);
+        wysLabel.setBounds(520,125,200,100);
+        szerLabel.setFont(new Font("Arial", Font.PLAIN, 36));
+        wysLabel.setFont(new Font("Arial", Font.PLAIN, 36));
 
         add(start);
         add(load);
@@ -46,7 +48,7 @@ public class Menu extends JFrame {
 
         load.addActionListener(e -> {
             loadGame = 1;
-            startGame(); //TODO: breakpoint
+            startGame();
         });
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

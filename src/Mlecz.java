@@ -3,7 +3,7 @@ import java.util.Random;
 public class Mlecz extends Roslina{
     @Override
     public void akcja() {
-        int wspolczynnikRozsiania = 5; //TODO: zmienic
+        int wspolczynnikRozsiania = 5;
 
         Random rand = new Random();
         for (int i = 0; i < 3; i++) {

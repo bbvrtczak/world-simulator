@@ -7,7 +7,7 @@ public class Trawa extends Roslina {
 
     @Override
     public void akcja() {
-        int wspolczynnikRozsiania = 5; //TODO: zmienic
+        int wspolczynnikRozsiania = 5;
 
         Random rand = new Random();
         int szansa = rand.nextInt(100);

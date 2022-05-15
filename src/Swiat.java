@@ -41,7 +41,7 @@ public class Swiat {
     }
 
     public void wykonajTure(){
-        rysujSwiat();
+        //rysujSwiat();
         dodaneOrganizmy.clear();
         komentarze.clear();
 
@@ -55,10 +55,14 @@ public class Swiat {
             } else if (czl.getUmiejetnoscCooldown() > 0) {
                 czl.zmniejszCooldown();
             }
+            if (czl.getUmiejetnoscCooldown() > 0 && czl.getUmiejetnoscCooldown() < 5){
+                dodajKomentarz("Umiejetnosc specjalna sie odnawia - pozostalo " + czl.getUmiejetnoscCooldown() + " tur");
+            }
         }
         if (!czyCzlowiekZyje){
             dodajKomentarz("czlowiek nie zyje - nie mozna sie ruszyc");
         }
+
 
         sortujOrganizmy();
 
@@ -97,16 +101,16 @@ public class Swiat {
         komentarze = new Vector<>();
         organizmy.addElement(stworzOrganizm("czlowiek", losujWolnePole(), swiat));
         for (int i = 0; i < 2; i++) {
-            organizmy.addElement(stworzOrganizm("trawa", losujWolnePole(), swiat));
+            /*organizmy.addElement(stworzOrganizm("trawa", losujWolnePole(), swiat));
             organizmy.addElement(stworzOrganizm("mlecz", losujWolnePole(), swiat));
             organizmy.addElement(stworzOrganizm("guarana", losujWolnePole(), swiat));
             organizmy.addElement(stworzOrganizm("wilcze_jagody", losujWolnePole(), swiat));
-            organizmy.addElement(stworzOrganizm("barszcz_sosnowskiego", losujWolnePole(), swiat));
+            organizmy.addElement(stworzOrganizm("barszcz_sosnowskiego", losujWolnePole(), swiat));*/
             organizmy.addElement(stworzOrganizm("wilk", losujWolnePole(), swiat));
             organizmy.addElement(stworzOrganizm("owca", losujWolnePole(), swiat));
-            organizmy.addElement(stworzOrganizm("lis", losujWolnePole(), swiat));
+            /*organizmy.addElement(stworzOrganizm("lis", losujWolnePole(), swiat));
             organizmy.addElement(stworzOrganizm("zolw", losujWolnePole(), swiat));
-            organizmy.addElement(stworzOrganizm("antylopa", losujWolnePole(), swiat));
+            organizmy.addElement(stworzOrganizm("antylopa", losujWolnePole(), swiat));*/
         }
     }
 
@@ -221,7 +225,7 @@ public class Swiat {
     public Punkt getPozycjaCzlowieka(){
         for(Organizm org : organizmy){
             if (org instanceof Czlowiek)
-                return org.getPozycja();
+                return new Punkt(org.getPozycja().getX(), org.getPozycja().getY());
         }
         return new Punkt(-1,-1);
     }
@@ -313,23 +317,23 @@ public class Swiat {
         nowePole = obecnaPozycja;
         switch (kierunekCzlowieka){ //TODO: zagmatwane kierunki
             case GORA:
+                if (obecnaPozycja.getY() > 0){
+                    nowePole.setY(obecnaPozycja.getY() - 1);
+                }
+                break;
+            case DOL:
+                if (obecnaPozycja.getY() < getWysokosc() - 1){
+                    nowePole.setY(obecnaPozycja.getY() + 1);
+                }
+                break;
+            case LEWO:
                 if (obecnaPozycja.getX() > 0){
                     nowePole.setX(obecnaPozycja.getX() - 1);
                 }
                 break;
-            case DOL:
-                if (obecnaPozycja.getX() < getWysokosc() - 1){
-                    nowePole.setX(obecnaPozycja.getX() + 1);
-                }
-                break;
-            case LEWO:
-                if (obecnaPozycja.getY() > 0){
-                    nowePole.setY(obecnaPozycja.getY() + 1);
-                }
-                break;
             case PRAWO:
-                if (obecnaPozycja.getY() < getSzerokosc() - 1){
-                    nowePole.setY(obecnaPozycja.getY() + 1);
+                if (obecnaPozycja.getX() < getSzerokosc() - 1){
+                    nowePole.setX(obecnaPozycja.getX() + 1);
                 }
                 break;
         }
@@ -405,5 +409,9 @@ public class Swiat {
                 czl.setCooldownUmiejetnosci(umiejetnoscCooldown);
             }
         }
+    }
+
+    public int getNumerTury(){
+        return numerTury;
     }
 }

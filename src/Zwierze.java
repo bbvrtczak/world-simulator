@@ -37,18 +37,22 @@ public abstract class Zwierze extends Organizm {
             }
         }
         else{
-            if (!atakowany.czyNiesmiertelny()){ //TODO: nie powinno byc atakujacy????
+            if (!atakujacy.czyNiesmiertelny()){
                 swiat.dodajKomentarz(atakowany.organizmToString() + " zabil " + atakujacy.organizmToString());
                 atakujacy.zabij();
             }
         }
 
         atakowany.zmniejszNiesmiertelnosc();
+        atakujacy.zmniejszNiesmiertelnosc();
     }
 
     @Override
     public void kolizja(Organizm organizmNaNowejPozycji){
         Organizm organizmAtakujacy = swiat.getOrganizmNaPozycji(getPozycja());
+        if (organizmNaNowejPozycji instanceof Czlowiek && this instanceof Czlowiek){
+            return;
+        }
         if (organizmNaNowejPozycji instanceof Roslina) {
             organizmNaNowejPozycji.kolizja(organizmAtakujacy);
         }
@@ -73,25 +77,24 @@ public abstract class Zwierze extends Organizm {
     }
 
     void ruch(Punkt nowePole){
-        if (this instanceof Czlowiek && swiat.czyCzlowiekSieRusza() != NIE_PORUSZA_SIE){
-            nowePole = swiat.getNowePoleCzlowieka();
+        if (this instanceof Czlowiek){
+            System.out.println("czlowiek sie rusza");
             if (nowePole == getPozycja()) {
                 return;
             }
         }
-        else if (this instanceof Czlowiek && swiat.czyCzlowiekSieRusza() == NIE_PORUSZA_SIE) {
-            return;
-        }
 
         Organizm organizmNaNowejPozycji = swiat.getOrganizmNaPozycji(nowePole);
 
-        if (organizmNaNowejPozycji != null){
+        if (organizmNaNowejPozycji != null) {
             kolizja(organizmNaNowejPozycji);
         }
+
         if (czySieRozmnozyl) {
             czySieRozmnozyl = false;
             return;
         }
+
         if (czySieRuszy()){
             setPozycja(nowePole);
         }

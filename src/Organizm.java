@@ -11,7 +11,7 @@ public abstract class Organizm {
     protected int niesmiertelnosc;
     protected boolean odbilAtak;
     protected boolean czyMozeSieRuszyc;
-    protected boolean rozum; //TODO: czy potrzebne???
+    protected boolean rozum;
     protected Swiat swiat;
 
     public abstract void akcja();
@@ -20,7 +20,7 @@ public abstract class Organizm {
 
     public abstract void rysowanie();
 
-    public abstract void specyfikaKolizji(Organizm org); //TODO: sprobowac zrobic w klasycznej kolizji
+    public abstract void specyfikaKolizji(Organizm org);
 
     public Punkt getPozycja(){
         return pozycja;

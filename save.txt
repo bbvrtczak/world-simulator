@@ -1,20 +1,30 @@
-6 6 7 true
-lis 2 4 6 7 7 0
-wilk 3 4 12 5 7 0
-wilk 1 3 9 5 7 0
-czlowiek 1 2 5 4 7 0 0 0
-mlecz 4 1 0 0 1 0
-mlecz 5 0 0 0 3 0
-wilcze_jagody 3 5 99 0 3 0
-mlecz 1 4 0 0 4 0
-wilcze_jagody 5 5 99 0 4 0
-mlecz 0 5 0 0 5 0
-wilcze_jagody 5 4 99 0 5 0
-mlecz 1 5 0 0 6 0
-mlecz 4 0 0 0 6 0
-wilcze_jagody 4 5 99 0 6 0
-mlecz 0 4 0 0 7 0
-wilcze_jagody 4 4 99 0 7 0
-mlecz 2 5 0 0 0 0
-mlecz 0 3 0 0 0 0
-mlecz 0 3 0 0 0 0
+11 11 17 true
+wilk 10 9 12 5 17 0
+wilk 5 3 9 5 17 0
+czlowiek 10 0 5 4 17 0 0 0
+antylopa 2 3 4 4 17 0
+guarana 8 3 0 0 1 0
+mlecz 1 10 0 0 1 0
+mlecz 3 10 0 0 1 0
+mlecz 1 10 0 0 1 0
+wilcze_jagody 1 5 99 0 1 0
+mlecz 1 9 0 0 2 0
+mlecz 2 7 0 0 2 0
+mlecz 1 8 0 0 2 0
+mlecz 1 9 0 0 2 0
+guarana 9 3 0 0 3 0
+mlecz 0 7 0 0 4 0
+mlecz 0 10 0 0 4 0
+mlecz 4 9 0 0 5 0
+mlecz 0 8 0 0 6 0
+mlecz 3 8 0 0 9 0
+guarana 7 5 0 0 12 0
+mlecz 0 9 0 0 13 0
+wilcze_jagody 0 5 99 0 14 0
+trawa 9 4 0 0 17 0
+mlecz 2 8 0 0 17 0
+guarana 9 8 0 0 17 0
+wilcze_jagody 0 6 99 0 17 0
+barszcz_sosnowskiego 3 9 10 0 17 0
+guarana 8 4 0 0 17 0
+wilcze_jagody 1 7 99 0 0 0

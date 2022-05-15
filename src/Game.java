@@ -10,20 +10,26 @@ import java.util.Vector;
 public class Game {
 
     private JFrame game;
-
     private JLabel comments;
+    private JLabel turnCounter;
+    private JLabel commentsLabel;
+    private JLabel boardLabel;
     private JPanel commentsBg;
-    Swiat swiat;
+    private Swiat swiat;
     private Vector<JPanel> places;
     private JPanel board;
-
     private int boxWidth;
     private int boxHeight;
+
+    //TODO: keylistener -> getpos x i y -> zmiana w koordynaty planszy (jakos getpos/rozmiarboxa nwm) -> wywolaniue funkcji dodania org na tym polu -> otworzenie swinga listy z argumentami pozycji -> dodanie org
 
     Game(Swiat s){
         swiat = s;
 
         game = new JFrame();
+
+        game.setFocusable(true);
+        game.addKeyListener(new KeyEvent(swiat, this));
 
         places = new Vector<>();
 
@@ -31,6 +37,116 @@ public class Game {
         boxWidth = 800/(swiat.getSzerokosc() + 1);
 
         showUI();
+    }
+
+    private void showUI(){
+        JButton nextTurn = new JButton("Nastepna tura");
+        nextTurn.setBounds(1100,950,300,150);
+        nextTurn.setFont(new Font("Arial", Font.PLAIN, 30));
+
+        JButton saveGame = new JButton("Zapisz gre");
+        saveGame.setBounds(700,950,300,150);
+        saveGame.setFont(new Font("Arial", Font.PLAIN, 30));
+
+        showLabels();
+        showBoardAndComments();
+
+        game.add(nextTurn);
+        game.add(saveGame);
+        game.setSize(1500,1200);
+        game.setLayout(null);
+        game.setVisible(true);
+        game.setTitle(" Wirtualny swiat | Bartosz Bartczak 188848");
+
+        drawBoard();
+
+        nextTurn.addActionListener(e -> {
+            loadNextTurn();
+            game.setFocusable(true);
+        });
+
+        saveGame.addActionListener(e -> {
+            swiat.zapiszGre();
+        });
+
+        game.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    }
+
+    private void showLabels(){
+        commentsLabel = new JLabel("Dziennik");
+        commentsLabel.setBounds(1150,25,1000,50);
+        commentsLabel.setFont(new Font("Arial", Font.PLAIN, 48));
+
+        boardLabel = new JLabel("Swiat");
+        boardLabel.setBounds(450,25,1000,50);
+        boardLabel.setFont(new Font("Arial", Font.PLAIN, 48));
+
+        turnCounter = new JLabel("Tura nr " + (swiat.getNumerTury()));
+        turnCounter.setBounds(125,1000,1000,50);
+        turnCounter.setFont(new Font("Arial", Font.PLAIN, 48));
+
+        game.add(turnCounter);
+        game.add(boardLabel);
+        game.add(commentsLabel);
+    }
+
+    private void showBoardAndComments(){
+        comments = new JLabel();
+        comments.setBounds(1100,100,300,800);
+        comments.setFont(new Font("Arial", Font.PLAIN, 18));
+
+        commentsBg = new JPanel();
+        commentsBg.setBounds(1050,100,400,800);
+        commentsBg.setBackground(Color.LIGHT_GRAY);
+
+        board = new JPanel();
+        board.setBounds(100,100,800,800);
+        board.setBackground(Color.LIGHT_GRAY);
+        board.setLayout(new FlowLayout());
+
+        game.add(commentsBg);
+        game.add(board);
+        commentsBg.add(comments);
+    }
+
+    public void loadNextTurn(){
+        turnCounter.setText("Tura nr " + (swiat.getNumerTury() + 1));
+        swiat.wykonajTure();
+        comments.setText("<html>");
+        for (String comment : swiat.komentarze){
+            comments.setText(comments.getText() + "<br/>" + comment);
+        }
+        comments.setText(comments.getText() + "</html>");
+
+        drawBoard();
+    }
+
+    private void drawBoard(){
+        places.clear();
+        board.removeAll();
+
+        for (int h = 0; h < swiat.getWysokosc(); h++){
+            for (int w = 0; w < swiat.getSzerokosc(); w++){
+                Punkt pole = new Punkt(w,h);
+                JPanel place = new JPanel();
+                place.setPreferredSize(new Dimension(boxWidth, boxHeight));
+                String orgString = "";
+                if (swiat.getOrganizmNaPozycji(pole) != null) {
+                    orgString = swiat.getOrganizmNaPozycji(pole).organizmToString();
+                    place.add(getIcon(orgString));
+                }
+                JLabel labb = new JLabel(w+" "+h);
+                place.add(labb);
+                places.addElement(place);
+            }
+        }
+
+        for (int h = 0; h < swiat.getWysokosc(); h++) {
+            for (int w = 0; w < swiat.getSzerokosc(); w++) {
+                board.add(places.get(h*swiat.getSzerokosc() + w));
+            }
+        }
+
     }
 
     private JLabel getIcon(String org){
@@ -83,89 +199,5 @@ public class Game {
             e.printStackTrace();
         }
         return null;
-    }
-
-    private void showUI(){
-        JButton nextTurn = new JButton("Nastepna tura");
-        nextTurn.setBounds(1100,950,300,150);
-        nextTurn.setFont(new Font("Arial", Font.PLAIN, 30));
-
-        JButton saveGame = new JButton("Zapisz gre");
-        saveGame.setBounds(700,950,300,150);
-        saveGame.setFont(new Font("Arial", Font.PLAIN, 30));
-
-        comments = new JLabel();
-        comments.setBounds(1100,100,300,800);
-        comments.setFont(new Font("Arial", Font.PLAIN, 18));
-
-        commentsBg = new JPanel();
-        commentsBg.setBounds(1050,100,400,800);
-        commentsBg.setBackground(Color.LIGHT_GRAY);
-
-        board = new JPanel();
-        board.setBounds(100,100,800,800);
-        board.setBackground(Color.LIGHT_GRAY);
-        //board.add(wolfPic);
-        board.setLayout(new FlowLayout());
-
-        game.add(commentsBg);
-        game.add(board);
-        game.add(nextTurn);
-        game.add(saveGame);
-        commentsBg.add(comments);
-        game.setSize(1500,1200);
-        game.setLayout(null);
-        game.setVisible(true);
-        game.setTitle(" Wirtualny swiat | Bartosz Bartczak 188848");
-
-        swiat.wykonajTure(); //TODO: czy juz wykonywac?
-
-        nextTurn.addActionListener(e -> {
-            loadNextTurn();
-        });
-
-        saveGame.addActionListener(e -> {
-            swiat.zapiszGre();
-        });
-
-        game.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    }
-
-    private void loadNextTurn(){
-        swiat.wykonajTure();
-        comments.setText("<html>");
-        for (String comment : swiat.komentarze){
-            comments.setText(comments.getText() + "<br/>" + comment);
-        }
-        comments.setText(comments.getText() + "</html>");
-
-        drawBoard();
-    }
-
-    private void drawBoard(){
-
-        places.clear();
-        board.removeAll();
-
-        for (int h = 0; h < swiat.getWysokosc(); h++){
-            for (int w = 0; w < swiat.getSzerokosc(); w++){
-                Punkt pole = new Punkt(w,h);
-                JPanel place = new JPanel();
-                place.setPreferredSize(new Dimension(boxWidth, boxHeight));
-                String orgString = "";
-                if (swiat.getOrganizmNaPozycji(pole) != null) {
-                    orgString = swiat.getOrganizmNaPozycji(pole).organizmToString();
-                    place.add(getIcon(orgString));
-                }
-                places.addElement(place);
-            }
-        }
-
-        for (int h = 0; h < swiat.getWysokosc(); h++) {
-            for (int w = 0; w < swiat.getSzerokosc(); w++) {
-                board.add(places.get(h*swiat.getSzerokosc() + w));
-            }
-        }
-
     }
 }

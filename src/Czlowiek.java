@@ -22,7 +22,7 @@ public class Czlowiek extends Zwierze{
 
     @Override
     public void akcja() {
-        Punkt nowePole = swiat.losujSasiedniePole(pozycja);
+        Punkt nowePole = swiat.getNowePoleCzlowieka();
         ruch(nowePole);
     }
 
