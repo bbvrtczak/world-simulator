@@ -1,11 +1,11 @@
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.Objects;
 import java.util.Vector;
+import java.awt.Color;
 
 public class Game {
 
@@ -23,11 +23,11 @@ public class Game {
     private int boxWidth;
     private int boxHeight;
 
-    Game(Swiat s){
+    Game(Swiat s, boolean isHex){
         swiat = s;
 
-        boxHeight = 800/(swiat.getWysokosc() + 1);
-        boxWidth = 800/(swiat.getSzerokosc() + 1);
+        boxHeight = 800/(swiat.getWysokosc());
+        boxWidth = 800/(swiat.getSzerokosc());
 
         game = new JFrame();
 
@@ -60,11 +60,16 @@ public class Game {
         game.setVisible(true);
         game.setTitle(" Wirtualny swiat | Bartosz Bartczak 188848");
 
-        drawBoard();
+        if (swiat.isHex) {
+            drawBoardHex();
+        }
+        else{
+            drawBoard();
+        }
 
         nextTurn.addActionListener(e -> {
             loadNextTurn();
-            game.setFocusable(true);
+            game.requestFocus();
         });
 
         saveGame.addActionListener(e -> {
@@ -79,7 +84,7 @@ public class Game {
         commentsLabel.setBounds(1150,25,1000,50);
         commentsLabel.setFont(new Font("Arial", Font.PLAIN, 48));
 
-        abilityLabel = new JLabel("U - umiejetnosc specjalna");
+        abilityLabel = new JLabel("ENTER - umiejetnosc specjalna");
         abilityLabel.setBounds(25,25,1000,50);
         abilityLabel.setFont(new Font("Arial", Font.PLAIN, 24));
 
@@ -109,7 +114,10 @@ public class Game {
         board = new JPanel();
         board.setBounds(100,100,800,800);
         board.setBackground(Color.LIGHT_GRAY);
-        board.setLayout(new FlowLayout());
+        FlowLayout flow = new FlowLayout(FlowLayout.LEFT);
+        flow.setHgap(0);
+        flow.setVgap(0);
+        board.setLayout(flow);
 
         game.add(commentsBg);
         game.add(board);
@@ -131,7 +139,12 @@ public class Game {
 
         swiat.dodaneOrgKomentarze.clear();
 
-        drawBoard();
+        if (swiat.isHex) {
+            drawBoardHex();
+        }
+        else{
+            drawBoard();
+        }
     }
 
     private void createNewOrganism(Punkt p){
@@ -168,13 +181,17 @@ public class Game {
                 Punkt pole = new Punkt(w,h);
                 JButton place = new JButton();
                 place.setPreferredSize(new Dimension(boxWidth, boxHeight));
-                String orgString = "";
+                String orgString = "nothing";
                 if (swiat.getOrganizmNaPozycji(pole) != null) {
                     orgString = swiat.getOrganizmNaPozycji(pole).organizmToString();
-                    place.add(getIcon(orgString));
+                    place.setIcon(new ImageIcon(getIcon(orgString)));
                 }
-                JLabel labb = new JLabel(w+" "+h);
-                place.add(labb);
+                else {
+                    //place.setIcon(new ImageIcon(getIcon("nothing")));
+                    JLabel labb = new JLabel("(" + w + " " + h + ")");
+                    //labb.setFont(new Font("Arial", Font.PLAIN, 15));
+                    place.add(labb);
+                }
                 places.addElement(place);
             }
         }
@@ -200,10 +217,56 @@ public class Game {
 
     }
 
-    private JLabel getIcon(String org){
+    private void drawBoardHex(){
+        places.clear();
+        board.removeAll();
+
+        int newBoxWidth = 800/(swiat.getSzerokosc()) - boxHeight/2/swiat.getSzerokosc();
+
+        boxWidth = newBoxWidth;
+
+        for (int h = 0; h < swiat.getWysokosc(); h++){
+            if (h % 2 == 1){
+                JButton empty = new JButton();
+                empty.setPreferredSize(new Dimension(boxWidth/2, boxHeight));
+                empty.setIcon(new ImageIcon(getIcon("empty")));
+                places.addElement(empty);
+            }
+            for (int w = 0; w < swiat.getSzerokosc(); w++){
+                Punkt pole = new Punkt(w,h);
+                JButton place = new JButton();
+                place.setPreferredSize(new Dimension(boxWidth, boxHeight));
+                String orgString = "nothing";
+                if (swiat.getOrganizmNaPozycji(pole) != null) {
+                    orgString = swiat.getOrganizmNaPozycji(pole).organizmToString();
+                    place.setIcon(new ImageIcon(getIcon(orgString)));
+                }
+                else {
+                    //place.setIcon(new ImageIcon(getIcon("hex")));
+                    JLabel labb = new JLabel("(" + w + " " + h + ")");
+                    place.add(labb);
+                }
+                places.addElement(place);
+            }
+            if (h % 2 == 0 && h < swiat.getWysokosc()) {
+                JButton empty = new JButton();
+                empty.setPreferredSize(new Dimension(boxWidth/2, boxHeight));
+                empty.setIcon(new ImageIcon(getIcon("empty")));
+                places.addElement(empty);
+            }
+        }
+        int index = 0;
+        for (int h = 0; h < swiat.getWysokosc(); h++) {
+            for (int w = 0; w < swiat.getSzerokosc() + 1; w++) {
+                board.add(places.get(index));
+                index++;
+            }
+        }
+    }
+
+    private Image getIcon(String org){
         try {
-            BufferedImage icon;
-            JLabel pic;
+            Image icon;
 
             icon = ImageIO.read(new File("nothing.png"));
 
@@ -240,11 +303,19 @@ public class Game {
             else if (Objects.equals(org,"barszcz_sosnowskiego")){
                 icon = ImageIO.read(new File("borscht_icon.png"));
             }
+            else if (Objects.equals(org,"nothing")){
+                icon = ImageIO.read(new File("nothing.png"));
+            }
+            else if (Objects.equals(org,"empty")){
+                icon = ImageIO.read(new File("blank_icon.png"));
+            }
+            else if (Objects.equals(org,"hex")){
+                icon = ImageIO.read(new File("hexagon.jpg"));
+            }
 
-            Image img = icon.getScaledInstance(boxWidth, boxHeight, Image.SCALE_DEFAULT);
-            pic = new JLabel(new ImageIcon(img));
+            icon = icon.getScaledInstance(boxWidth, boxHeight, Image.SCALE_DEFAULT);
 
-            return pic;
+            return icon;
 
         } catch (IOException e) {
             e.printStackTrace();

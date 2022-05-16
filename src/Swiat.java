@@ -12,6 +12,11 @@ public class Swiat {
     private static final int LEWO = 3;
     private static final int PRAWO = 4;
 
+    private static final int UP_LEFT = 5;
+    private static final int UP_RIGHT = 6;
+    private static final int DOWN_LEFT = 7;
+    private static final int DOWN_RIGHT = 8;
+
     protected int wysokosc;
     protected int szerokosc;
     protected int numerTury;
@@ -22,6 +27,7 @@ public class Swiat {
     protected Vector<Organizm> zabiteOrganizmy;
     protected Vector<String> komentarze;
     protected Vector<String> dodaneOrgKomentarze;
+    protected boolean isHex;
 
     public void rysujSwiat(){
         System.out.println("----------------------------");
@@ -93,15 +99,23 @@ public class Swiat {
         }
     }
 
-    public void przygotujSwiat(Swiat swiat){
+    public void przygotujSwiat(Swiat swiat, int hex){
         //dodawanie organizmow
         organizmy = new Vector<>();
         dodaneOrganizmy = new Vector<>();
         zabiteOrganizmy = new Vector<>();
         komentarze = new Vector<>();
         dodaneOrgKomentarze = new Vector<>();
+
+        if (hex == 1){
+            isHex = true;
+        }
+        else{
+            isHex = false;
+        }
+
         organizmy.addElement(stworzOrganizm("czlowiek", losujWolnePole(), swiat));
-        for (int i = 0; i < 2; i++) {
+        /*for (int i = 0; i < 2; i++) {
             organizmy.addElement(stworzOrganizm("trawa", losujWolnePole(), swiat));
             organizmy.addElement(stworzOrganizm("mlecz", losujWolnePole(), swiat));
             organizmy.addElement(stworzOrganizm("guarana", losujWolnePole(), swiat));
@@ -112,7 +126,7 @@ public class Swiat {
             organizmy.addElement(stworzOrganizm("lis", losujWolnePole(), swiat));
             organizmy.addElement(stworzOrganizm("zolw", losujWolnePole(), swiat));
             organizmy.addElement(stworzOrganizm("antylopa", losujWolnePole(), swiat));
-        }
+        }*/
     }
 
     public Swiat getSwiat(){
@@ -148,8 +162,15 @@ public class Swiat {
     }
 
     public Punkt losujSasiedniePole(Punkt p){
-        Vector<Punkt> sasiedniePola = new Vector<>();
         Punkt zajete = new Punkt(-1,-1);
+        Random rand = new Random();
+        if (isHex){
+            Vector<Punkt> polaHex = getSasiedniePolaHex(p);
+            if (!polaHex.isEmpty())
+                return polaHex.get(rand.nextInt(polaHex.size()));
+            return zajete;
+        }
+        Vector<Punkt> sasiedniePola = new Vector<>();
         for(int y = p.getX() - 1; y < p.getY() + 2; y++){
             for (int x = p.getX() - 1; x < p.getX() + 2; x++){
                 if (!(y < 0 || y >= wysokosc || x < 0 || x >= szerokosc || (y == p.getY() && x == p.getX()))){
@@ -159,7 +180,6 @@ public class Swiat {
             }
         }
 
-        Random rand = new Random();
         if (!sasiedniePola.isEmpty())
             return sasiedniePola.get(rand.nextInt(sasiedniePola.size()));
         else
@@ -167,11 +187,11 @@ public class Swiat {
     }
 
     public Punkt losujSasiedniePoleR2(Punkt p){
-        Vector<Punkt> sasiedniePola = new Vector<Punkt>();
+        Vector<Punkt> sasiedniePola = new Vector<>();
         Punkt zajete = new Punkt(-1,-1);
         for(int y = p.getX() - 2; y < p.getY() + 3; y++){
             for (int x = p.getX() - 2; x < p.getX() + 3; x++){
-                if (!(y < 0 || y >= wysokosc || x < 0 || x >= szerokosc)){
+                if (!(y < 0 || y >= wysokosc || x < 0 || x >= szerokosc || (y == p.getY() && x == p.getX()))){
                     Punkt pole = new Punkt(x,y);
                     sasiedniePola.add(pole);
                 }
@@ -182,6 +202,67 @@ public class Swiat {
             return sasiedniePola.get(rand.nextInt(sasiedniePola.size()));
         else
             return zajete;
+    }
+
+    public Punkt losujWolneSasiedniePole(Punkt p){
+        Random rand = new Random();
+        if (isHex){
+            Vector<Punkt> polaHex = getWolneSasiedniePolaHex(p);
+            if (!polaHex.isEmpty())
+                return polaHex.get(rand.nextInt(polaHex.size()));
+            return new Punkt(-1,-1);
+        }
+        Vector<Punkt> sasiedniePola = new Vector<>();
+        for (int y = p.getY() - 1; y < p.getY() + 2; y++) {
+            for (int x = p.getX() - 1; x < p.getX() + 2; x++) {
+                if (!(y < 0 || y > this.wysokosc - 1 || x < 0 || x > this.szerokosc - 1 || (y == p.getY() && x == p.getX()))){
+                    Punkt ptmp = new Punkt(x, y);
+                    if (this.getOrganizmNaPozycji(ptmp) == null)
+                        sasiedniePola.addElement(ptmp);
+                }
+            }
+        }
+
+        int iloscPol = sasiedniePola.size();
+        if (iloscPol == 0)
+            return new Punkt(-1,-1);
+        return sasiedniePola.get(rand.nextInt(iloscPol));
+    }
+
+    public Vector<Punkt> getSasiedniePolaHex(Punkt p){
+        Vector<Punkt> sasiedniePola = new Vector<>();
+        for(int y = p.getX() - 2; y < p.getY() + 3; y++){
+            for (int x = p.getX() - 2; x < p.getX() + 3; x++){
+                if (!(y < 0 || y >= wysokosc || x < 0 || x >= szerokosc || (y == p.getY() && x == p.getX()))){
+                    Punkt pole = new Punkt(x,y);
+                    if ( (pole.getX() == p.getX() && (pole.getY() == p.getY() - 1 || pole.getY() == p.getY() +1)) ||
+                        (pole.getX() == p.getX() + 1 && (pole.getY() == p.getY() - 1 || pole.getY() == p.getY() +1)) ||
+                        (pole.getX() == p.getX() - 1 && pole.getY() == p.getY()) || (pole.getX() == p.getX() + 1 && pole.getY() == p.getY()) ) {
+                            sasiedniePola.add(pole);
+                    }
+                }
+            }
+        }
+        return sasiedniePola;
+    }
+
+    public Vector<Punkt> getWolneSasiedniePolaHex(Punkt p){
+        Vector<Punkt> sasiedniePola = new Vector<>();
+        for(int y = p.getX() - 2; y < p.getY() + 3; y++){
+            for (int x = p.getX() - 2; x < p.getX() + 3; x++){
+                if (!(y < 0 || y >= wysokosc || x < 0 || x >= szerokosc || (y == p.getY() && x == p.getX()))){
+                    Punkt pole = new Punkt(x,y);
+                    if ( (pole.getX() == p.getX() && (pole.getY() == p.getY() - 1 || pole.getY() == p.getY() +1)) ||
+                            (pole.getX() == p.getX() + 1 && (pole.getY() == p.getY() - 1 || pole.getY() == p.getY() +1)) ||
+                            (pole.getX() == p.getX() - 1 && pole.getY() == p.getY()) || (pole.getX() == p.getX() + 1 && pole.getY() == p.getY()) ) {
+                        if (this.getOrganizmNaPozycji(pole) == null) {
+                            sasiedniePola.add(pole);
+                        }
+                    }
+                }
+            }
+        }
+        return sasiedniePola;
     }
 
     public void dodajOrganizm(Organizm org){
@@ -237,25 +318,6 @@ public class Swiat {
 
     public boolean getCzyCzlowiekZyje(){
         return czyCzlowiekZyje;
-    }
-
-    public Punkt losujWolneSasiedniePole(Punkt p){
-        Vector<Punkt> sasiedniePola = new Vector<>();
-        for (int y = p.getY() - 1; y < p.getY() + 2; y++) {
-            for (int x = p.getX() - 1; x < p.getX() + 2; x++) {
-                if (!(y < 0 || y > this.wysokosc - 1 || x < 0 || x > this.szerokosc - 1 || (y == p.getY() && x == p.getX()))){
-                    Punkt ptmp = new Punkt(x, y);
-                    if (this.getOrganizmNaPozycji(ptmp) == null)
-                        sasiedniePola.addElement(ptmp);
-                }
-            }
-        }
-
-        int iloscPol = sasiedniePola.size();
-        if (iloscPol == 0)
-            return new Punkt(-1,-1);
-        Random rand = new Random();
-        return sasiedniePola.get(rand.nextInt(iloscPol));
     }
 
     public Organizm stworzOrganizm(String orgString, Punkt p, Swiat swiat){
@@ -337,8 +399,37 @@ public class Swiat {
                     nowePole.setX(obecnaPozycja.getX() + 1);
                 }
                 break;
+            case UP_LEFT:
+                if (obecnaPozycja.getX() < getSzerokosc() - 1){
+                    nowePole.setY(obecnaPozycja.getY() - 1);
+                    if (obecnaPozycja.getY() % 2 == 1)
+                        nowePole.setX(obecnaPozycja.getX() - 1);
+                }
+                break;
+            case UP_RIGHT:
+                if (obecnaPozycja.getX() < getSzerokosc() - 1){
+                    nowePole.setY(obecnaPozycja.getY() - 1);
+                    if (obecnaPozycja.getY() % 2 == 0)
+                        nowePole.setX(obecnaPozycja.getX() + 1);
+                }
+                break;
+            case DOWN_LEFT:
+                if (obecnaPozycja.getX() < getSzerokosc() - 1){
+                    nowePole.setY(obecnaPozycja.getY() + 1);
+                    if (obecnaPozycja.getY() % 2 == 1)
+                        nowePole.setX(obecnaPozycja.getX() - 1);
+                }
+                break;
+            case DOWN_RIGHT:
+                if (obecnaPozycja.getX() < getSzerokosc() - 1){
+                    nowePole.setY(obecnaPozycja.getY() + 1);
+                    if (obecnaPozycja.getY() % 2 == 0)
+                        nowePole.setX(obecnaPozycja.getX() + 1);
+                }
+                break;
         }
         kierunekCzlowieka = NIE_PORUSZA_SIE;
+        System.out.println(nowePole);
         return nowePole;
     }
 
@@ -352,11 +443,15 @@ public class Swiat {
     }
 
     public void zapiszGre(){
-        File saveFile = new File("save.txt");
-        try {
-            FileWriter save = new FileWriter("save.txt");
+        FileWriter save;
 
-            save.write(wysokosc + " " + szerokosc + " " + numerTury + " " + czyCzlowiekZyje);
+        try {
+            if (isHex)
+                save = new FileWriter("saveHex.txt");
+            else
+                save = new FileWriter("save.txt");
+
+            save.write(wysokosc + " " + szerokosc + " " + numerTury + " " + czyCzlowiekZyje + " " + isHex);
             for (Organizm org : organizmy){
                 save.write("\n");
                 save.write(org.organizmToString() + " " + org.getPosX() + " " + org.getPosY() + " " + org.getSila() + " " + org.getInicjatywa() + " " + org.getWiek() + " " + org.getIleDoRozmnozenia());
@@ -372,19 +467,24 @@ public class Swiat {
         }
     }
 
-    public void wczytajGre(Swiat swiat) throws FileNotFoundException {
+    public void wczytajGre(Swiat swiat, String mode) throws FileNotFoundException {
         organizmy = new Vector<>();
         dodaneOrganizmy = new Vector<>();
         zabiteOrganizmy = new Vector<>();
         komentarze = new Vector<>();
-        File readSave = new File("save.txt");
+        dodaneOrgKomentarze = new Vector<>();
+        File readSave;
+        readSave = new File("save.txt");
+        if (Objects.equals(mode, "hex"))
+            readSave = new File("saveHex.txt");
         Scanner save = new Scanner(readSave);
-        int data, x, y, sila, inicjatywa, wiek, rozmnozenie, umiejetnoscTury = 0, umiejetnoscCooldown = 0;
+        int x, y, sila, inicjatywa, wiek, rozmnozenie, umiejetnoscTury = 0, umiejetnoscCooldown = 0;
         String nazwaOrganizmu;
         wysokosc = save.nextInt();
         szerokosc = save.nextInt();
         numerTury = save.nextInt();
         czyCzlowiekZyje = save.nextBoolean();
+        isHex = save.nextBoolean();
         while (save.hasNext()) {
             nazwaOrganizmu = save.next();
             x = save.nextInt();

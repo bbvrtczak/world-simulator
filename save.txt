@@ -1,4 +1,2 @@
-11 11 13 true
-wilk 4 2 9 5 13 0
-wilk 2 1 9 5 13 0
-czlowiek 10 9 5 4 13 0 3 8
+11 11 14 true false
+czlowiek 4 6 5 4 14 0 0 0

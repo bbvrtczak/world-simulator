@@ -3,7 +3,6 @@ import java.awt.*;
 import java.io.FileNotFoundException;
 
 public class Menu extends JFrame {
-    private JFrame f;
     private JTextField szerokosc;
     private JTextField wysokosc;
     Swiat swiat;
@@ -11,33 +10,48 @@ public class Menu extends JFrame {
 
     Menu(){
         setTitle(" Wirtualny swiat | Bartosz Bartczak 188848");
+
         JButton start = new JButton("Nowa gra");
-        JButton load = new JButton("Wczytaj gre");
         start.setBounds(150,400,300,150);
-        load.setBounds(500,400,300,150);
         start.setFont(new Font("Arial", Font.PLAIN, 30));
+
+        JButton load = new JButton("Wczytaj gre");
+        load.setBounds(500,400,300,150);
         load.setFont(new Font("Arial", Font.PLAIN, 30));
 
+        JButton startHex = new JButton("Nowa gra HEX");
+        startHex.setBounds(150,575,300,150);
+        startHex.setFont(new Font("Arial", Font.PLAIN, 30));
+
+        JButton loadHex = new JButton("Wczytaj gre HEX");
+        loadHex.setBounds(500,575,300,150);
+        loadHex.setFont(new Font("Arial", Font.PLAIN, 30));
+
         szerokosc = new JTextField("");
-        wysokosc = new JTextField("");
-        wysokosc.setBounds(200,200,200,100);
         szerokosc.setBounds(500,200,200,100);
         szerokosc.setFont(new Font("Arial", Font.PLAIN, 50));
+
+        wysokosc = new JTextField("");
+        wysokosc.setBounds(200,200,200,100);
         wysokosc.setFont(new Font("Arial", Font.PLAIN, 50));
 
         JLabel szerLabel = new JLabel("Szerokosc");
-        JLabel wysLabel = new JLabel("Wysokosc");
         szerLabel.setBounds(220,125,200,100);
-        wysLabel.setBounds(520,125,200,100);
         szerLabel.setFont(new Font("Arial", Font.PLAIN, 36));
+
+        JLabel wysLabel = new JLabel("Wysokosc");
+        wysLabel.setBounds(520,125,200,100);
         wysLabel.setFont(new Font("Arial", Font.PLAIN, 36));
 
         JLabel newGame = new JLabel("Wirtualny Swiat");
         newGame.setBounds(300,25,800,100);
         newGame.setFont(new Font("Arial", Font.PLAIN, 50));
 
+
         add(start);
         add(load);
+        add(loadHex);
+        add(startHex);
         add(szerokosc);
         add(wysokosc);
         add(szerLabel);
@@ -51,9 +65,18 @@ public class Menu extends JFrame {
             startGame();
         });
 
+        startHex.addActionListener(e -> {
+            startGameHex();
+        });
+
         load.addActionListener(e -> {
             loadGame = 1;
             startGame();
+        });
+
+        loadHex.addActionListener(e -> {
+            loadGame = 1;
+            startGameHex();
         });
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -65,7 +88,7 @@ public class Menu extends JFrame {
         if (loadGame == 1) {
             try {
                 swiat = new Swiat(10,10);
-                swiat.wczytajGre(swiat);
+                swiat.wczytajGre(swiat, "normal");
             } catch (FileNotFoundException ex) {
                 ex.printStackTrace();
             }
@@ -77,9 +100,33 @@ public class Menu extends JFrame {
 
             swiat = new Swiat(szer,wys);
 
-            swiat.przygotujSwiat(swiat);
+            swiat.przygotujSwiat(swiat, 0);
         }
 
-        new Game(swiat);
+        new Game(swiat, swiat.isHex);
+    }
+
+    private void startGameHex(){
+        this.dispose();
+
+        if (loadGame == 1) {
+            try {
+                swiat = new Swiat(10,10);
+                swiat.wczytajGre(swiat, "hex");
+            } catch (FileNotFoundException ex) {
+                ex.printStackTrace();
+            }
+        }
+        else {
+            int szer = Integer.parseInt(szerokosc.getText());
+            int wys = Integer.parseInt(wysokosc.getText());
+
+            swiat = new Swiat(szer, wys);
+
+            swiat.przygotujSwiat(swiat, 1);
+
+        }
+        new Game(swiat, swiat.isHex);
+
     }
 }

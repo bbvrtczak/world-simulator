@@ -24,21 +24,21 @@ public abstract class Zwierze extends Organizm {
 
         if (getSila() > atakowany.getSila()) {
             if (!atakowany.czyNiesmiertelny()) {
-                swiat.dodajKomentarz(atakujacy.organizmToString() + " zabil " + atakowany.organizmToString());
+                swiat.dodajKomentarz(atakujacy.getClass().getSimpleName() + " zabil " + atakowany.getClass().getSimpleName());
                 atakowany.zabij();
             }
         }
         else if (getSila() == atakowany.getSila()){
             if (getWiek() >= atakowany.getWiek()){
                 if (!atakowany.czyNiesmiertelny()){
-                    swiat.dodajKomentarz(atakujacy.organizmToString() + " zabil " + atakowany.organizmToString());
+                    swiat.dodajKomentarz(atakujacy.getClass().getSimpleName() + " zabil " + atakowany.getClass().getSimpleName());
                     atakowany.zabij();
                 }
             }
         }
         else{
             if (!atakujacy.czyNiesmiertelny()){
-                swiat.dodajKomentarz(atakowany.organizmToString() + " zabil " + atakujacy.organizmToString());
+                swiat.dodajKomentarz(atakowany.getClass().getSimpleName() + " zabil " + atakujacy.getClass().getSimpleName());
                 atakujacy.zabij();
             }
         }

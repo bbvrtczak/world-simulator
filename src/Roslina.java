@@ -19,7 +19,7 @@ public abstract class Roslina extends Organizm{
     public void kolizja(Organizm org){
         Organizm jedzonaRoslina = this.getSwiat().getOrganizmNaPozycji(this.getPozycja());
 
-        this.getSwiat().dodajKomentarz(org.toString() + " zjadl " + this.organizmToString());
+        this.getSwiat().dodajKomentarz(org.getClass().getSimpleName() + " zjadl " + this.getClass().getSimpleName());
 
         jedzonaRoslina.specyfikaKolizji(org);
 
@@ -45,7 +45,7 @@ public abstract class Roslina extends Organizm{
 
             nowaRoslina = this.swiat.stworzOrganizm(this.organizmToString(), nowePole, swiat);
             this.swiat.dodajOrganizmTymczasowy(nowaRoslina);
-            this.swiat.dodajKomentarz(this.organizmToString() + " rozrosl sie");
+            this.swiat.dodajKomentarz(this.getClass().getSimpleName() + " rozrosl sie");
         }
     }
 
