@@ -1,16 +1,33 @@
+import java.util.Random;
+import java.util.Vector;
+
 public class Lis extends Zwierze{
     @Override
     public void akcja() {
         int iloscProb = 0;
         Punkt nowePole;
-        do{
-            if (iloscProb > 20){
-                return;
-            }
-            nowePole = swiat.losujSasiedniePole(pozycja);
-            iloscProb++;
-        }while(swiat.getOrganizmNaPozycji(nowePole) != null && swiat.getOrganizmNaPozycji(nowePole).getSila() > sila);
-        ruch(nowePole);
+        if (!swiat.isHex) {
+            do {
+                if (iloscProb > 20) {
+                    return;
+                }
+                nowePole = swiat.losujSasiedniePole(pozycja);
+                iloscProb++;
+            } while (swiat.getOrganizmNaPozycji(nowePole) != null && swiat.getOrganizmNaPozycji(nowePole).getSila() > sila);
+            ruch(nowePole);
+        }
+        else{
+            Random rand = new Random();
+            Vector<Punkt> sasiednie = swiat.getSasiedniePolaHex(this.getPozycja());
+            do {
+                if (iloscProb > 20) {
+                    return;
+                }
+                nowePole = sasiednie.get(rand.nextInt(sasiednie.size()));
+                iloscProb++;
+            } while (swiat.getOrganizmNaPozycji(nowePole) != null && swiat.getOrganizmNaPozycji(nowePole).getSila() > sila);
+            ruch(nowePole);
+        }
     }
 
     @Override

@@ -1,4 +1,5 @@
 import java.util.Random;
+import java.util.Vector;
 
 public class BarszczSosnowskiego extends Roslina{
     @Override
@@ -11,17 +12,29 @@ public class BarszczSosnowskiego extends Roslina{
             rozsianie();
         }
 
-        Punkt p = new Punkt();
-        for (int y = getPosY() - 1; y < getPosY(); y++){
-            for (int x = getPosX() - 1; x < getPosX(); x++) {
-                if (!(y < 0 || y > swiat.getWysokosc() || x < 0 || x > swiat.getSzerokosc())) {
-                    p.setY(y);
-                    p.setX(x);
-                    Organizm org = swiat.getOrganizmNaPozycji(p);
-                    if (org instanceof Zwierze) {
-                        swiat.dodajKomentarz("barszcz sosnowskiego zabil " + org.organizmToString());
-                        org.zabij();
+        if (!swiat.isHex) {
+            Punkt p = new Punkt();
+            for (int y = getPosY() - 1; y < getPosY(); y++) {
+                for (int x = getPosX() - 1; x < getPosX(); x++) {
+                    if (!(y < 0 || y > swiat.getWysokosc() || x < 0 || x > swiat.getSzerokosc())) {
+                        p.setY(y);
+                        p.setX(x);
+                        Organizm org = swiat.getOrganizmNaPozycji(p);
+                        if (org instanceof Zwierze) {
+                            swiat.dodajKomentarz("barszcz sosnowskiego zabil " + org.organizmToString());
+                            org.zabij();
+                        }
                     }
+                }
+            }
+        }
+        else{
+            Vector<Punkt> sasiednie = swiat.getSasiedniePolaHex(this.getPozycja());
+            for (Punkt p : sasiednie){
+                Organizm org = swiat.getOrganizmNaPozycji(p);
+                if (org instanceof Zwierze){
+                    swiat.dodajKomentarz("barszcz sosnowskiego zabil " + org.organizmToString());
+                    org.zabij();
                 }
             }
         }

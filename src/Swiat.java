@@ -115,7 +115,7 @@ public class Swiat {
         }
 
         organizmy.addElement(stworzOrganizm("czlowiek", losujWolnePole(), swiat));
-        /*for (int i = 0; i < 2; i++) {
+        for (int i = 0; i < 2; i++) {
             organizmy.addElement(stworzOrganizm("trawa", losujWolnePole(), swiat));
             organizmy.addElement(stworzOrganizm("mlecz", losujWolnePole(), swiat));
             organizmy.addElement(stworzOrganizm("guarana", losujWolnePole(), swiat));
@@ -126,7 +126,7 @@ public class Swiat {
             organizmy.addElement(stworzOrganizm("lis", losujWolnePole(), swiat));
             organizmy.addElement(stworzOrganizm("zolw", losujWolnePole(), swiat));
             organizmy.addElement(stworzOrganizm("antylopa", losujWolnePole(), swiat));
-        }*/
+        }
     }
 
     public Swiat getSwiat(){

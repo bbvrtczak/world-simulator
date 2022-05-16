@@ -153,7 +153,8 @@ public class Game {
 
         choice.add(orgNames);
 
-        choice.setSize(200,250);
+        choice.setSize(400,500);
+        orgNames.setFont(new Font("Arial", Font.PLAIN, 30));
 
         choice.show();
         orgNames.addListSelectionListener(e -> {
@@ -242,9 +243,9 @@ public class Game {
                     place.setIcon(new ImageIcon(getIcon(orgString)));
                 }
                 else {
-                    //place.setIcon(new ImageIcon(getIcon("hex")));
-                    JLabel labb = new JLabel("(" + w + " " + h + ")");
-                    place.add(labb);
+                    place.setIcon(new ImageIcon(getIcon("hex")));
+                    //JLabel labb = new JLabel("(" + w + " " + h + ")");
+                    //place.add(labb);
                 }
                 places.addElement(place);
             }
@@ -261,6 +262,19 @@ public class Game {
                 board.add(places.get(index));
                 index++;
             }
+        }
+
+        for (JButton place : places){
+            place.addActionListener(e -> {
+                for (int i=0;i<swiat.getWysokosc();i++){
+                    for (int j=0;j<swiat.getSzerokosc()+1;j++){
+                        if (Objects.equals(place, places.get(i*(swiat.getSzerokosc()+1) + j))){
+                            Punkt p = new Punkt(j,i);
+                            createNewOrganism(p);
+                        }
+                    }
+                }
+            });
         }
     }
 
