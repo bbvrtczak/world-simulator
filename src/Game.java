@@ -13,18 +13,21 @@ public class Game {
     private JLabel comments;
     private JLabel turnCounter;
     private JLabel commentsLabel;
+    private JLabel abilityLabel;
     private JLabel boardLabel;
     private JPanel commentsBg;
     private Swiat swiat;
-    private Vector<JPanel> places;
+    private Vector<JButton> places;
+    private Vector<String> names;
     private JPanel board;
     private int boxWidth;
     private int boxHeight;
 
-    //TODO: keylistener -> getpos x i y -> zmiana w koordynaty planszy (jakos getpos/rozmiarboxa nwm) -> wywolaniue funkcji dodania org na tym polu -> otworzenie swinga listy z argumentami pozycji -> dodanie org
-
     Game(Swiat s){
         swiat = s;
+
+        boxHeight = 800/(swiat.getWysokosc() + 1);
+        boxWidth = 800/(swiat.getSzerokosc() + 1);
 
         game = new JFrame();
 
@@ -32,9 +35,8 @@ public class Game {
         game.addKeyListener(new KeyEvent(swiat, this));
 
         places = new Vector<>();
-
-        boxHeight = 800/(swiat.getWysokosc() + 1);
-        boxWidth = 800/(swiat.getSzerokosc() + 1);
+        names = new Vector<>();
+        fillNames();
 
         showUI();
     }
@@ -77,6 +79,10 @@ public class Game {
         commentsLabel.setBounds(1150,25,1000,50);
         commentsLabel.setFont(new Font("Arial", Font.PLAIN, 48));
 
+        abilityLabel = new JLabel("U - umiejetnosc specjalna");
+        abilityLabel.setBounds(25,25,1000,50);
+        abilityLabel.setFont(new Font("Arial", Font.PLAIN, 24));
+
         boardLabel = new JLabel("Swiat");
         boardLabel.setBounds(450,25,1000,50);
         boardLabel.setFont(new Font("Arial", Font.PLAIN, 48));
@@ -88,6 +94,7 @@ public class Game {
         game.add(turnCounter);
         game.add(boardLabel);
         game.add(commentsLabel);
+        game.add(abilityLabel);
     }
 
     private void showBoardAndComments(){
@@ -112,13 +119,44 @@ public class Game {
     public void loadNextTurn(){
         turnCounter.setText("Tura nr " + (swiat.getNumerTury() + 1));
         swiat.wykonajTure();
+
         comments.setText("<html>");
+        for(String comment : swiat.dodaneOrgKomentarze){
+            comments.setText(comments.getText() + "<br/>" + comment);
+        }
         for (String comment : swiat.komentarze){
             comments.setText(comments.getText() + "<br/>" + comment);
         }
         comments.setText(comments.getText() + "</html>");
 
+        swiat.dodaneOrgKomentarze.clear();
+
         drawBoard();
+    }
+
+    private void createNewOrganism(Punkt p){
+        JFrame choice = new JFrame("Kreator organizmow");
+        JList<String> orgNames = new JList<>(names);
+
+        choice.add(orgNames);
+
+        choice.setSize(200,250);
+
+        choice.show();
+        orgNames.addListSelectionListener(e -> {
+            String orgName = orgNames.getSelectedValue();
+            if (swiat.getOrganizmNaPozycji(p) == null) {
+                Organizm org = swiat.stworzOrganizm(orgName, p, swiat);
+                if (org != null) {
+                    org.wylaczRuch();
+                    org.setIleDoRozmnozenia(1);
+                    swiat.organizmy.addElement(org);
+                    swiat.dodaneOrgKomentarze.addElement("Dodano " + org.organizmToString());
+                    loadNextTurn();
+                }
+            }
+            choice.dispose();
+        });
     }
 
     private void drawBoard(){
@@ -128,7 +166,7 @@ public class Game {
         for (int h = 0; h < swiat.getWysokosc(); h++){
             for (int w = 0; w < swiat.getSzerokosc(); w++){
                 Punkt pole = new Punkt(w,h);
-                JPanel place = new JPanel();
+                JButton place = new JButton();
                 place.setPreferredSize(new Dimension(boxWidth, boxHeight));
                 String orgString = "";
                 if (swiat.getOrganizmNaPozycji(pole) != null) {
@@ -145,6 +183,19 @@ public class Game {
             for (int w = 0; w < swiat.getSzerokosc(); w++) {
                 board.add(places.get(h*swiat.getSzerokosc() + w));
             }
+        }
+
+        for (JButton place : places){
+            place.addActionListener(e -> {
+                for (int i=0;i<swiat.getWysokosc();i++){
+                    for (int j=0;j<swiat.getSzerokosc();j++){
+                        if (Objects.equals(place, places.get(i*swiat.getSzerokosc() + j))){
+                            Punkt p = new Punkt(j,i);
+                            createNewOrganism(p);
+                        }
+                    }
+                }
+            });
         }
 
     }
@@ -199,5 +250,18 @@ public class Game {
             e.printStackTrace();
         }
         return null;
+    }
+
+    private void fillNames(){
+        names.addElement("wilk");
+        names.addElement("owca");
+        names.addElement("lis");
+        names.addElement("zolw");
+        names.addElement("antylopa");
+        names.addElement("trawa");
+        names.addElement("mlecz");
+        names.addElement("guarana");
+        names.addElement("wilcze_jagody");
+        names.addElement("barszcz_sosnowskiego");
     }
 }

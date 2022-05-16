@@ -32,12 +32,17 @@ public class Menu extends JFrame {
         szerLabel.setFont(new Font("Arial", Font.PLAIN, 36));
         wysLabel.setFont(new Font("Arial", Font.PLAIN, 36));
 
+        JLabel newGame = new JLabel("Wirtualny Swiat");
+        newGame.setBounds(300,25,800,100);
+        newGame.setFont(new Font("Arial", Font.PLAIN, 50));
+
         add(start);
         add(load);
         add(szerokosc);
         add(wysokosc);
         add(szerLabel);
         add(wysLabel);
+        add(newGame);
         setSize(1000,800);
         setLayout(null);
         setVisible(true);

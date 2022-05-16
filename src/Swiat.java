@@ -21,6 +21,7 @@ public class Swiat {
     protected Vector<Organizm> dodaneOrganizmy;
     protected Vector<Organizm> zabiteOrganizmy;
     protected Vector<String> komentarze;
+    protected Vector<String> dodaneOrgKomentarze;
 
     public void rysujSwiat(){
         System.out.println("----------------------------");
@@ -63,7 +64,6 @@ public class Swiat {
             dodajKomentarz("czlowiek nie zyje - nie mozna sie ruszyc");
         }
 
-
         sortujOrganizmy();
 
         for (Organizm org : organizmy){
@@ -99,18 +99,19 @@ public class Swiat {
         dodaneOrganizmy = new Vector<>();
         zabiteOrganizmy = new Vector<>();
         komentarze = new Vector<>();
+        dodaneOrgKomentarze = new Vector<>();
         organizmy.addElement(stworzOrganizm("czlowiek", losujWolnePole(), swiat));
         for (int i = 0; i < 2; i++) {
-            /*organizmy.addElement(stworzOrganizm("trawa", losujWolnePole(), swiat));
+            organizmy.addElement(stworzOrganizm("trawa", losujWolnePole(), swiat));
             organizmy.addElement(stworzOrganizm("mlecz", losujWolnePole(), swiat));
             organizmy.addElement(stworzOrganizm("guarana", losujWolnePole(), swiat));
             organizmy.addElement(stworzOrganizm("wilcze_jagody", losujWolnePole(), swiat));
-            organizmy.addElement(stworzOrganizm("barszcz_sosnowskiego", losujWolnePole(), swiat));*/
+            organizmy.addElement(stworzOrganizm("barszcz_sosnowskiego", losujWolnePole(), swiat));
             organizmy.addElement(stworzOrganizm("wilk", losujWolnePole(), swiat));
             organizmy.addElement(stworzOrganizm("owca", losujWolnePole(), swiat));
-            /*organizmy.addElement(stworzOrganizm("lis", losujWolnePole(), swiat));
+            organizmy.addElement(stworzOrganizm("lis", losujWolnePole(), swiat));
             organizmy.addElement(stworzOrganizm("zolw", losujWolnePole(), swiat));
-            organizmy.addElement(stworzOrganizm("antylopa", losujWolnePole(), swiat));*/
+            organizmy.addElement(stworzOrganizm("antylopa", losujWolnePole(), swiat));
         }
     }
 

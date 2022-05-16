@@ -78,7 +78,6 @@ public abstract class Zwierze extends Organizm {
 
     void ruch(Punkt nowePole){
         if (this instanceof Czlowiek){
-            System.out.println("czlowiek sie rusza");
             if (nowePole == getPozycja()) {
                 return;
             }
